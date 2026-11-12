@@ -132,7 +132,7 @@ CLASH_YEARS = (2017, 2021, 2022, 2023, 2024, 2025, 2026)  # clashfinder.com/s/lg
 # approximate room size -> 0-100 (the timetable position is the strongest public headliner signal)
 STAGES = [(r"grote zaal\b", 92), (r"ronda", 100), (r"stadsschouwburg.*main", 55), (r"pandora(?!.*(foyer|studio))|^tv pandora", 60),
           (r"cloud nine", 45), (r"hertz", 55), (r"domkerk|jacobikerk|janskerk|pieterskerk", 50), (r"theater utrecht (theater|koepel)", 40),
-          (r"kapitaal|blauwe zaal", 40), (r"foyer|studio", 35)]
+          (r"kapitaal|blauwe zaal", 40), (r"db's main", 40), (r"db's bar", 30), (r"foyer|studio", 35)]
 
 
 def stage_score(name):

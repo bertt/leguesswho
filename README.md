@@ -68,7 +68,7 @@ The "Estimated fee per act" section lets you pick a year, shows the performing a
 
 | Factor | Weight | Scoring |
 |---|---|---|
-| Room | 30% | Largest room on the clashfinder timetable: Ronda 100 (2,000), Grote Zaal 92 (1,717), Stadsschouwburg Main Room 55, Hertz 55 (543), Pandora 60 (625), churches 50, Cloud Nine 45 (400), other 25–40 |
+| Room | 30% | Largest room on the clashfinder timetable: Ronda 100 (2,000), Grote Zaal 92 (1,717), Stadsschouwburg Main Room 55, Hertz 55 (543), Pandora 60 (625), churches 50, Cloud Nine 45 (400), dB's Main Stage 40, dB's Bar 30, other 25–40 |
 | Prime time | 20% | Set starts 20:00–23:00 in a room of Hertz size or bigger = 100, 19:00–20:00 or 23:00–24:00 = 50, otherwise 20 |
 | Opener / closer | 10% | Opens the festival (Thursday, start 18:00–20:30) or closes it (last day, start 19:00–21:00) in Grote Zaal or Ronda = 100, otherwise 0 |
 | Slot length | 10% | Longest set: 30 min = 0, 90+ min = 100 |

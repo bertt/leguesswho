@@ -279,7 +279,7 @@ const FEE_MODEL = {
   interval: [0.55, 1.8],
   minScore: 5,
   weights: {
-    stage: { w: 30, short: "Room", label: "Room (timetable)", how: "Largest room the act plays on the clashfinder timetable: Ronda = 100 (capacity 2,000), Grote Zaal = 92 (1,717), Pandora = 60 (625), Hertz = 55 (543), Stadsschouwburg Main Room = 55, churches = 50, Cloud Nine = 45 (400), other = 25–40. Not available for 2018 and 2019 (weight is redistributed)." },
+    stage: { w: 30, short: "Room", label: "Room (timetable)", how: "Largest room the act plays on the clashfinder timetable: Ronda = 100 (capacity 2,000), Grote Zaal = 92 (1,717), Pandora = 60 (625), Hertz = 55 (543), Stadsschouwburg Main Room = 55, churches = 50, Cloud Nine = 45 (400), dB's Main Stage = 40, dB's Bar = 30, other = 25–40. Not available for 2018 and 2019 (weight is redistributed)." },
     position: { w: 20, short: "Prime time", label: "Prime time position", how: "Set starts between 20:00 and 23:00 in a room of Hertz size or bigger = 100, starts one hour either side (19:00–20:00, 23:00–24:00) = 50, otherwise 20. Not available for 2018 and 2019." },
     opening: { w: 10, short: "Opener / closer", label: "Opening or closing act", how: "Opens the festival (Thursday, start 18:00–20:30) or closes it (last day, start 19:00–21:00) in a main room (Grote Zaal or Ronda) = 100, otherwise 0. Not available for 2018 and 2019." },
     duration: { w: 10, short: "Length", label: "Slot length", how: "Longest set on the timetable: 30 min = 0, 90 min or more = 100. Not available for 2018 and 2019." },

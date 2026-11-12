@@ -45,6 +45,7 @@ CANCELLED = {
 }
 NOT_PERFORMING = {2026: ["Ciro Monoarfa Goudsmit", "Uta"]}  # Sound & Culture Summit session participants
 RENAME = {2026: {"Mai Mai Mai & Osama Abu Ali": "Mai Mai Mai & Tareq Abboushi"}}
+NOT_CLOSER = {2026: ["Holy Tongue"]}  # plays the last day in a main room but is not the festival closer
 ITEM = r'<div data-order="[^"]*" class="item"[^>]*?data-project="([^"]*)"[^>]*>.*?<h3 class="h6"><a[^>]*>([^<]*)</a>'
 
 
@@ -183,7 +184,7 @@ def clash(year):
         # prime time (start 20:00-23:00) = 100, the hour either side = 50, otherwise 20; only counted in rooms of Hertz size and up
         pos = (100 if 20 <= hod < 23 else 50 if 19 <= hod < 20 or 23 <= hod < 24 else 20) if big else 20
         # festival opener (Thursday 18:00-20:30) or closer (last day 19:00-21:00) in a main room (Grote Zaal / Ronda)
-        oc = 100 if sc >= 90 and ((day == 0 and 18 <= h < 20.5) or (day == last and last > 0 and 19 <= h - 24 * last < 21)) else 0
+        oc = 100 if sc >= 90 and key(nm) not in {key(n) for n in NOT_CLOSER.get(year, [])} and ((day == 0 and 18 <= h < 20.5) or (day == last and last > 0 and 19 <= h - 24 * last < 21)) else 0
         o = out.setdefault(key(nm), {"n": nm, "s": 0, "d": 0, "p": 0, "o": 0, "x": 0, "w": [], "bs": (-1, 0)})
         o["w"].append((h, f"{DAYS[day % 7]} {int(hod):02d}:{round(hod % 1 * 60):02d}".replace(":60", ":00") + " · " + stage))
         o["w"] = sorted(set(o["w"]))

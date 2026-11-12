@@ -61,7 +61,7 @@ def get(url, key):
 def clean(n):
     n = html.unescape(n)
     n = re.sub(r"[\u200b\u200c\u200d\ufeff]", "", n)
-    n = re.sub(r"\s*\((20\d\d|COSMOS \d{4})\)\s*$", "", n)
+    n = re.sub(r"\s*\((20\d\d|COSMOS \d{4})\)\s*$|\s+in 20\d\d$|\s*\(curated by [^)]*\)\s*$|\s+presents$", "", n, flags=re.I)
     n = re.sub(r"\s+", " ", n).strip(" ;•·-–—\u00a0")
     return n
 

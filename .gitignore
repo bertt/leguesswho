@@ -1,2 +1,3 @@
-pdf/
+pdf/*
+!pdf/*.pdf
 __pycache__/

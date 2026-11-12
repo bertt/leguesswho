@@ -19,6 +19,23 @@ A visual, framework-free overview of the annual accounts of **Stichting Le Guess
 
 All numbers come from the annual reports on the foundation's ANBI page: <https://leguesswho.com/anbi>. Every figure used is in [`data.js`](data.js); report links are listed on the site. This is an unofficial project – check the original PDFs before relying on a number.
 
+## Archived PDFs
+
+Copies of all documents on the ANBI page are stored in [`pdf/`](pdf/), downloaded on **2026-11-12** (in case the originals change or disappear). Compare against the original link to spot changes.
+
+| Year | Local copy | Original |
+|---|---|---|
+| 2017 | [pdf/2017.pdf](pdf/2017.pdf) | [link](https://leguesswho.com/media/PDF/ANBI/LGW%20-%20Jaarverlsag%20%26%20Jaarrekening%202017%20-%20beknopt%20incl.%20WNT.pdf) |
+| 2018 | [pdf/2018.pdf](pdf/2018.pdf) | [link](https://leguesswho.com/media/PDF/ANBI/LGW%20-%20Jaarverlsag%20%26%20Jaarrekening%202018-%20beknopt%20incl.%20WNT.pdf) |
+| 2019 | [pdf/2019.pdf](pdf/2019.pdf) | [link](https://leguesswho.com/media/PDF/ANBI/LGW%20-%20Jaarverlsag%20%26%20Jaarrekening%202019%20-%20beknopt%20incl.%20WNT.pdf) |
+| 2020 | [pdf/2020.pdf](pdf/2020.pdf) | [link](https://leguesswho.com/media/PDF/ANBI/LGW%20-%20Jaarverlsag%20%26%20Jaarrekening%202020%20-%20beknopt%20incl.%20WNT.pdf) |
+| 2021 | [pdf/2021.pdf](pdf/2021.pdf) | [link](https://leguesswho.com/media/PDF/ANBI/LGW%20-%20Jaarverlsag%20%26%20Jaarrekening%202021%20-%20beknopt%20incl.%20WNT.pdf) |
+| 2022 | [pdf/2022.pdf](pdf/2022.pdf) | [link](https://leguesswho.com/media/PDF/ANBI/LGW%20-%20Jaarverlsag%20%26%20Jaarrekening%202022%20-%20beknopt%20incl.%20WNT.pdf) |
+| 2023 | [pdf/2023.pdf](pdf/2023.pdf) | [link](https://leguesswho.com/media/PDF/ANBI/LGW%20-%20Jaarverlsag%20%26%20Jaarrekening%202023%20-%20beknopt%20incl.%20WNT.pdf) |
+| 2024 | [pdf/2024.pdf](pdf/2024.pdf) | [link](https://leguesswho.com/media/PDF/ANBI/LGW%20-%20Jaarverlsag%20%26%20Jaarrekening%202024%20-%20beknopt%20incl.%20WNT.pdf) |
+| 2025 | [pdf/2025.pdf](pdf/2025.pdf) | [link](https://leguesswho.com/media/PDF/ANBI/Jaarverslag%20%26%20Jaarrekening%202025%20-%20V2.pdf) |
+| Plan 2025–2028 (summary) | [pdf/plan.pdf](pdf/plan.pdf) | [link](https://leguesswho.com/media/PDF/ANBI/Samenvatting%20meerjarenplan%2025-28.pdf) |
+
 ## When the 2026 annual report is published
 
 The report normally appears on <https://leguesswho.com/anbi> in the course of 2027. Only `data.js` needs to change; everything else (charts, KPIs, heatmap, trivia, ANBI check) is calculated from it.

@@ -286,7 +286,7 @@ window.addEventListener("scroll", () => el("tip").hidden = true, { passive: true
   const links = [...document.querySelectorAll("#nav a")], secs = links.map(a => el(a.hash.slice(1)));
   const spy = () => {
     let cur = 0; secs.forEach((s, i) => { if (s.getBoundingClientRect().top < 120) cur = i; });
-    links.forEach((a, i) => a.classList.toggle("active", i === cur && scrollY > 300));
+    links.forEach((a, i) => a.classList.toggle("active", i === cur));
     const a = links[cur]; if (a.classList.contains("active")) { const n = el("nav"); n.scrollLeft = a.offsetLeft - n.clientWidth / 2 + a.offsetWidth / 2; }
   };
   addEventListener("scroll", spy, { passive: true }); spy();

@@ -270,13 +270,13 @@ const EARLY_YEARS = {
  *   pool      = artist costs of the year (cost.artists) x gageShare   (rest = travel, hotel, visas, backline)
  *   score     = weighted sum (0-100) of the factors below
  *   fee       = pool x score^2 / sum(score^2 x showWeight of all acts that year)   (convex: fees are skewed towards headliners)
- *   showWeight = 1 + repeatFactor x (shows - 1): an act playing twice gets 1.5x the fee of a single show
+ *   showWeight = 1 + repeatFactor x (shows - 1): an act playing twice gets 1.2x the fee of a single show
  *   interval  = fee x interval[0] ... fee x interval[1]  (80%, uncertainty of pool share and of the scores)
  * Years without an annual report: add them to ESTIMATED_ARTIST_COSTS (euros) - they are shown as "estimate".
  */
 const FEE_MODEL = {
   gageShare: 0.70,
-  repeatFactor: 0.5,
+  repeatFactor: 0.2,
   gageShareRange: [0.59, 0.80],
   interval: [0.55, 1.8],
   minScore: 5,

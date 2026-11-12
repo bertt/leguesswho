@@ -68,11 +68,12 @@ The "Estimated fee per act" section lets you pick a year, shows the performing a
 
 | Factor | Weight | Scoring |
 |---|---|---|
-| Room | 35% | Largest room on the clashfinder timetable: Grote Zaal 100, Ronda 85, Pandora 65, Stadsschouwburg Main Room 60, Cloud Nine / churches 50, Hertz 45, other 25–40 |
+| Room | 30% | Largest room on the clashfinder timetable: Grote Zaal 100, Ronda 85, Pandora 65, Stadsschouwburg Main Room 60, Cloud Nine / churches 50, Hertz 45, other 25–40 |
 | Prime time | 20% | Set starts 20:00–23:00 in a room of Hertz size or bigger = 100, 19:00–20:00 or 23:00–24:00 = 50, otherwise 20 |
+| Opener / closer | 10% | Opens the festival (Thursday, start 18:00–20:30) or closes it (last day, start 19:00–21:00) in Grote Zaal or Ronda = 100, otherwise 0 |
 | Slot length | 10% | Longest set: 30 min = 0, 90+ min = 100 |
 | Billing | 20% | Curator or first announcement = 100, later announcement = 80, additions list = 60, only line-up page = 45 |
-| Ensemble | 10% | Orchestra / band / collective = 100, collaboration = 65, solo or DJ = 15, otherwise 45 |
+| Ensemble | 5% | Orchestra / band / collective = 100, collaboration = 65, solo or DJ = 15, otherwise 45 |
 | Special commission | 5% | Curator = 100, "presents / premiere / collab" = 50, otherwise 0 |
 
 The weights and their texts live in `FEE_MODEL` in `data.js`; the per-act inputs (`b`, `e`, `c`, `s`, `d`, `p`) in the generated `lineups.js`. There is deliberately no popularity factor (Wikipedia page views were dropped: most acts have no page, and Spotify misses many acts too).

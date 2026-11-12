@@ -279,11 +279,12 @@ const FEE_MODEL = {
   interval: [0.55, 1.8],
   minScore: 5,
   weights: {
-    stage: { w: 35, short: "Room", label: "Room (timetable)", how: "Largest room the act plays on the clashfinder timetable: Grote Zaal = 100, Ronda = 85, Pandora = 65, Stadsschouwburg Main Room = 60, Cloud Nine / churches = 50, Hertz = 45, other = 25–40. Not available for 2018 and 2019 (weight is redistributed)." },
+    stage: { w: 30, short: "Room", label: "Room (timetable)", how: "Largest room the act plays on the clashfinder timetable: Grote Zaal = 100, Ronda = 85, Pandora = 65, Stadsschouwburg Main Room = 60, Cloud Nine / churches = 50, Hertz = 45, other = 25–40. Not available for 2018 and 2019 (weight is redistributed)." },
     position: { w: 20, short: "Prime time", label: "Prime time position", how: "Set starts between 20:00 and 23:00 in a room of Hertz size or bigger = 100, starts one hour either side (19:00–20:00, 23:00–24:00) = 50, otherwise 20. Not available for 2018 and 2019." },
+    opening: { w: 10, short: "Opener / closer", label: "Opening or closing act", how: "Opens the festival (Thursday, start 18:00–20:30) or closes it (last day, start 19:00–21:00) in a main room (Grote Zaal or Ronda) = 100, otherwise 0. Not available for 2018 and 2019." },
     duration: { w: 10, short: "Length", label: "Slot length", how: "Longest set on the timetable: 30 min = 0, 90 min or more = 100. Not available for 2018 and 2019." },
     billing: { w: 20, short: "Billing", label: "Billing", how: "How prominently the act was announced: curator or named in the first announcement = 100, named in a later announcement = 80, only in an additions list = 60, only on the line-up page = 45." },
-    ensemble: { w: 10, short: "Ensemble", label: "Ensemble size", how: "From the act name: orchestra / band / ensemble / collective = 100, collaboration (&, +, x, feat., presents) = 65, solo or DJ = 15, otherwise 45." },
+    ensemble: { w: 5, short: "Ensemble", label: "Ensemble size", how: "From the act name: orchestra / band / ensemble / collective = 100, collaboration (&, +, x, feat., presents) = 65, solo or DJ = 15, otherwise 45." },
     commission: { w: 5, short: "Commis.", label: "Special commission", how: "Curator = 100, collaboration or ‘presents / performing / premiere’ project = 50, otherwise 0." },
   },
 };

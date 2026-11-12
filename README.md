@@ -62,7 +62,7 @@ The "Estimated fee per act" section lets you pick a year, shows the performing a
 **How the model works** (all of it is an assumption-based estimate; nothing is validated against real fees):
 
 1. **Pool per year** = `cost.artists` from the annual report × `gageShare` (70%, range 59–80%). The 70% is my assumption, not a published number: artist costs also contain travel, hotel, visas and backline. All fees scale linearly with it.
-2. **Score per act (0–100)** = weighted average of the factors below. Factors that are unavailable (room, prime time and slot length for 2018 and 2019) are left out and the remaining weights are renormalised. Minimum score 5.
+2. **Score per act (0–100)** = weighted average of the factors below. Factors that are unavailable (room, prime time and slot length for 2018 and 2019) are left out and the remaining weights are renormalised. Minimum score 5. Panels and talks (flagged in the table) get a fixed score of 1, so they receive almost no fee.
 3. **Fee** = pool × score² ÷ Σ score² of all acts of that year. The square skews the pool towards high-scoring acts.
 4. **80% interval** = fee × 0.55 to fee × 1.8 (uncertainty of the pool share and of the scores).
 

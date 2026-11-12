@@ -278,6 +278,7 @@ const FEE_MODEL = {
   gageShareRange: [0.59, 0.80],
   interval: [0.55, 1.8],
   minScore: 5,
+  panelScore: 1,
   weights: {
     stage: { w: 30, short: "Room", label: "Room (timetable)", how: "Largest room the act plays on the clashfinder timetable: Ronda = 100 (capacity 2,000), Grote Zaal = 92 (1,717), Pandora = 60 (625), Hertz = 55 (543), Stadsschouwburg Main Room = 55, churches = 50, Cloud Nine = 45 (400), dB's Main Stage = 40, dB's Bar = 30, other = 25–40. Not available for 2018 and 2019 (weight is redistributed)." },
     position: { w: 20, short: "Prime time", label: "Prime time position", how: "Set starts between 20:00 and 23:00 in a room of Hertz size or bigger = 100, starts one hour either side (19:00–20:00, 23:00–24:00) = 50, otherwise 20. Not available for 2018 and 2019." },

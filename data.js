@@ -6,7 +6,7 @@
  * Amounts are in euros. Source: "Jaarverslag & Jaarrekening" PDFs on https://leguesswho.com/anbi
  * Missing values: use null (charts skip them).
  *
- * rev   = income lines.            cost = cost lines (exploitatierekening).
+ * rev   = revenue lines.            cost = cost lines (exploitatierekening).
  * visitors.festival = Le Guess Who? paying festival visitors.
  * result = reported operating result including interest ("exploitatieresultaat").
  */
@@ -134,17 +134,17 @@ const YEARS = [
  * basis: "report" = the explanation is stated in the annual report, "inference" = our reading of the numbers.
  */
 const INSIGHTS = [
-  { year: 2017, tag: "info", metric: "Income +54% vs 2016",
-    title: "Income jumped by more than half",
-    text: "Total income went from about €0.79M (2016 column in the 2017 report) to €1.22M. Almost all of the extra money was structural subsidy: city, province and Fonds Podiumkunsten together went from about €153k to €422k.",
+  { year: 2017, tag: "info",   metric: "Revenue +54% vs 2016",
+      title: "Revenue jumped by more than half",
+      text: "Total revenue went from about €0.79M (2016 column in the 2017 report) to €1.22M. Almost all of the extra money was structural subsidy: city, province and Fonds Podiumkunsten together went from about €153k to €422k.",
     basis: "inference" },
-  { year: 2018, tag: "warn", metric: "Ticket income −2%",
+  { year: 2018, tag: "warn", metric: "Ticket revenue −2%",
     title: "Passes replaced day tickets",
-    text: "Ticket income dipped slightly although the festival was sold out. The report says more people chose a pass (passe-partout) instead of separate day tickets, and the Saturday day tickets were stopped early to keep the venues from getting too crowded. The year ended with a small loss.",
+    text: "Ticket revenue dipped slightly although the festival was sold out. The report says more people chose a pass (passe-partout) instead of separate day tickets, and the Saturday day tickets were stopped early to keep the venues from getting too crowded. The year ended with a small loss.",
     basis: "report" },
-  { year: 2020, tag: "warn", metric: "Ticket income −100%, result +€261k",
+  { year: 2020, tag: "warn", metric: "Ticket revenue −100%, result +€261k",
     title: "Festival cancelled, yet a big surplus",
-    text: "Because of COVID-19 the live festival was cancelled: ticket income dropped to zero and costs fell to €0.65M. Government and fund support (including €379.5k extra COVID support) was kept by the foundation, which created a €261k surplus. It was parked in a dedicated COVID reserve, not distributed.",
+    text: "Because of COVID-19 the live festival was cancelled: ticket revenue dropped to zero and costs fell to €0.65M. Government and fund support (including €379.5k extra COVID support) was kept by the foundation, which created a €261k surplus. It was parked in a dedicated COVID reserve, not distributed.",
     basis: "report" },
   { year: 2021, tag: "warn", metric: "Surplus +€204k",
     title: "Smaller festival, another surplus",
@@ -154,17 +154,17 @@ const INSIGHTS = [
     title: "Back to full size, and a leadership change",
     text: "The first full festival since 2019 made costs jump from €1.61M to €1.97M. Core staff costs rose 30% (€295k → €385k); the report also lists a termination payment of €33,362 to departing director Johan Gijsen, and the team grew from 5.5 to 6.7 FTE. The €62k loss was covered by the COVID reserve built up in 2020–21.",
     basis: "report" },
-  { year: 2023, tag: "good", metric: "Ticket income +27%",
-    title: "Ticket income jumps, loss almost zero",
-    text: "A full, sold-out edition lifted ticket income from €586k to €745k. Private-fund money also doubled (€150k → €286k), and the year closed with a deficit of only €8k (budgeted: −€81k).",
+  { year: 2023, tag: "good",   metric: "Ticket revenue +27%",
+      title: "Ticket revenue jumps, loss almost zero",
+    text: "A full, sold-out edition lifted ticket revenue from €586k to €745k. Private-fund money also doubled (€150k → €286k), and the year closed with a deficit of only €8k (budgeted: −€81k).",
     basis: "inference" },
   { year: 2024, tag: "warn", metric: "Loss −€148k",
     title: "Biggest loss of the period, but planned",
-    text: "Costs grew 12% (artist fees +24%, €466k → €576k) while income rose only 5%, and private-fund money fell 11%. The loss was actually smaller than the budgeted deficit of €227k and was covered by reserves: the COVID reserve (€148k) and an artists reserve (€90k) were used up. The report says subsidies do not keep pace with inflation and rising costs.",
+    text: "Costs grew 12% (artist fees +24%, €466k → €576k) while revenue rose only 5%, and private-fund money fell 11%. The loss was actually smaller than the budgeted deficit of €227k and was covered by reserves: the COVID reserve (€148k) and an artists reserve (€90k) were used up. The report says subsidies do not keep pace with inflation and rising costs.",
     basis: "report" },
-  { year: 2025, tag: "good", metric: "Income +14%, result +€40k",
+  { year: 2025, tag: "good", metric: "Revenue +14%, result +€40k",
     title: "Back in the black",
-    text: "Income rose from €2.22M to €2.53M: Fonds Podiumkunsten subsidy +26% (€415k → €521k), ticket income +9%, partnership income +43% and new bar (horeca) income of €33k. Reported artist costs are lower, but part of that is a changed cost grouping (see the note on the artist-cost chart). Private-fund money fell 27%, while donations from individuals rose 266% after a new supporters campaign.",
+    text: "Revenue rose from €2.22M to €2.53M: Fonds Podiumkunsten subsidy +26% (€415k → €521k), ticket revenue +9%, partnership revenue +43% and new bar (horeca) revenue of €33k. Reported artist costs are lower, but part of that is a changed cost grouping (see the note on the artist-cost chart). Private-fund money fell 27%, while donations from individuals rose 266% after a new supporters campaign.",
     basis: "report" },
   { year: 2025, tag: "info", metric: "Cash €778k vs. equity €348k",
     title: "A lot of cash, but it isn't all theirs",
@@ -172,16 +172,16 @@ const INSIGHTS = [
     basis: "inference" },
   { year: 2025, tag: "info", metric: "Visitors flat, COSMOS +15%",
     title: "The festival is maxed out; growth is online",
-    text: "Paying festival visitors have hovered around 19–20k since 2019: the venues are full and the report says there is no room (and no wish) to grow. All growth in the headline total comes from online, non-paying people: COSMOS reach went from 16.5k people (2022) to 37.4k people (2025). These are free online listeners and viewers (mixtapes, films, live radio, talks), not customers: the reports show no COSMOS ticket, subscription or other income. It is audience reach, not money.",
+    text: "Paying festival visitors have hovered around 19–20k since 2019: the venues are full and the report says there is no room (and no wish) to grow. All growth in the headline total comes from online, non-paying people: COSMOS reach went from 16.5k people (2022) to 37.4k people (2025). These are free online listeners and viewers (mixtapes, films, live radio, talks), not customers: the reports show no COSMOS ticket, subscription or other revenue. It is audience reach, not money.",
     basis: "report" },
 ];
 
 const TRIVIA = [
   { icon: "🎟️", label: "Price per visitor", value: (Y) => { const a = ticketPerVisitor(Y[Y.length - 1]); return a ? "€" + a.toFixed(0) : "—"; },
-    text: "average ticket income per festival visitor in the latest year (about €25 in 2017)." },
+    text: "average ticket revenue per festival visitor in the latest year (about €25 in 2017)." },
   { icon: "🌍", label: "Countries", value: (Y) => Y[Y.length - 1].visitors.countries, text: "countries are represented among visitors in the latest year." },
   { icon: "🧑‍🤝‍🧑", label: "Volunteers", value: (Y) => Y.filter(y => y.volunteers).slice(-1)[0].volunteers, text: "volunteers helped in the latest year (95 in 2017)." },
-  { icon: "🏛️", label: "Public money share", value: (Y) => { const l = Y[Y.length - 1]; return Math.round(100 * subsidies(l) / totalRev(l)) + "%"; }, text: "of income is subsidy (city, province, Fonds Podiumkunsten, EU, other)." },
+  { icon: "🏛️", label: "Public money share", value: (Y) => { const l = Y[Y.length - 1]; return Math.round(100 * subsidies(l) / totalRev(l)) + "%"; }, text: "of revenue is subsidy (city, province, Fonds Podiumkunsten, EU, other)." },
   { icon: "🎤", label: "Artist fee per artist", value: () => "≈ €3–4k", text: "rough average in 2025: ~€561k core-programme fees divided by 150–180 artists. Per-band fees are not published." },
   { icon: "🛡️", label: "Spent on Covid-year reserve", value: () => "€0.6M", text: "of COVID support kept in 2020–22 (€379.5k + €271.1k + €145k) went into a reserve that paid for the 2022 and 2024 losses." },
   { icon: "🔢", label: "Edition numbering", value: () => "16 → 18", text: "the 2023 report calls 2023 the 16th edition, the 2024 report calls 2024 the 18th. One edition seems skipped in the reports." },

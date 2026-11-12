@@ -108,7 +108,7 @@ const pct = (a, b) => (b ? (a - b) / Math.abs(b) * 100 : null);
 const comparablePrev = (y, p, key) => (y.restated2024 && p && p.year === y.year - 1 && y.restated2024[key] != null) ? y.restated2024[key] : null;
 
 /* ---------- hero ---------- */
-el("lead").innerHTML = `${esc(SITE.foundation)} runs the Utrecht festival <b>Le Guess Who?</b>. This page turns its published annual accounts (${esc(SITE.generated.replace("Based on the annual reports published for ", ""))}) into pictures anyone can follow – no accounting degree needed. In <b>${last.year}</b> the foundation had <b>${eurShort(totalRev(last))}</b> income and a result of <b>${eurShort(last.result)}</b>.`;
+el("lead").innerHTML = `${esc(SITE.foundation)} runs the Utrecht festival <b>Le Guess Who?</b>. This page turns its published annual accounts (${esc(SITE.generated.replace("Based on the annual reports published for ", ""))}) into pictures anyone can follow – no accounting degree needed. In <b>${last.year}</b> the foundation had <b>${eurShort(totalRev(last))}</b> revenue and a result of <b>${eurShort(last.result)}</b>.`;
 
 function kpi(label, value, delta, goodUp, abs) {
   const cls = delta == null || Math.abs(delta) < 0.5 ? "flat" : ((delta > 0) === goodUp ? "up" : "down");
@@ -118,11 +118,11 @@ function kpi(label, value, delta, goodUp, abs) {
 }
 const artistsPrev = last.restated2024 && last.classificationChange ? sum(last.restated2024, ["artists"]) : artistFees(prev);
 el("kpis").innerHTML = [
-  kpi("Total income", eurShort(totalRev(last)), pct(totalRev(last), totalRev(prev)), true),
+  kpi("Total revenue", eurShort(totalRev(last)), pct(totalRev(last), totalRev(prev)), true),
   kpi("Total costs", eurShort(totalCost(last)), pct(totalCost(last), totalCost(prev)), false),
   kpi("Result (profit/loss)", eurShort(last.result), last.result - prev.result, true, true),
   kpi("Festival visitors", num(festVisitors(last)), pct(festVisitors(last), festVisitors(prev)), true),
-  kpi("Ticket income / visitor", "€" + (ticketPerVisitor(last) || 0).toFixed(0), pct(ticketPerVisitor(last), ticketPerVisitor(prev)), true),
+  kpi("Ticket revenue / visitor", "€" + (ticketPerVisitor(last) || 0).toFixed(0), pct(ticketPerVisitor(last), ticketPerVisitor(prev)), true),
   kpi("Salary costs", eurShort(salaries(last)), pct(salaries(last), salaries(prev)), false),
   kpi("Artist fees", eurShort(artistFees(last)), pct(artistFees(last), artistsPrev), false),
   kpi("Equity (own money)", eurShort(last.bal.equity), last.bal.equity - prev.bal.equity, true, true),
@@ -131,9 +131,9 @@ el("kpis").innerHTML = [
 /* ---------- nav & glossary ---------- */
 el("nav").innerHTML = [...document.querySelectorAll("#about, main section")].map(s => `<a href="#${s.id}">${s.id === "about" ? "About" : s.querySelector("h2").textContent.split(/[,&?]/)[0]}</a>`).join("");
 el("glossary").innerHTML = [
-  ["Income", "All money coming in: tickets, subsidies from the city, province and funds, sponsors, bar sales."],
+  ["Revenue", "All money coming in: tickets, subsidies from the city, province and funds, sponsors, bar sales."],
   ["Costs", "All money going out: fees for bands, venue hire, salaries, marketing."],
-  ["Result", "Income minus costs. Positive = surplus, negative = deficit."],
+  ["Result", "Revenue minus costs. Positive = surplus, negative = deficit."],
   ["Equity", "The foundation's own buffer built up over the years. It absorbs losses; if it runs out, trouble starts."],
   ["Cash vs equity", "Cash is the money in the bank today, including ticket money for next year's festival. Equity is what is left after all debts."],
 ].map(([a, b]) => `<div><b>${a}</b><p>${b}</p></div>`).join("");
@@ -141,8 +141,8 @@ el("glossary").innerHTML = [
 /* ---------- charts ---------- */
 const rev = k => Y.map(y => y.rev[k] != null ? y.rev[k] : 0);
 chart("c-incomecost", {
-  labels, covid: true, aria: "Income versus costs per year",
-  series: [{ name: "Income", color: COL.pink, data: Y.map(totalRev) }, { name: "Costs", color: COL.yellow, data: Y.map(totalCost) }],
+  labels, covid: true,   aria: "Revenue versus costs per year",
+    series: [{ name: "Revenue", color: COL.pink, data: Y.map(totalRev) }, { name: "Costs", color: COL.yellow, data: Y.map(totalCost) }],
   footnote: "Purple shading = COVID years (2020 festival cancelled, 2021 reduced). * 2016 comes from the comparison column of the 2017 report and is less certain.",
 });
 chart("c-result", {
@@ -164,15 +164,15 @@ chart("c-visitors", {
            { name: "Other", color: COL.red, data: Y.map(y => y.visitors && y.visitors.other || 0) },
            { name: "U? + COSMOS (not split in report)", color: COL.blue, data: Y.map(y => y.visitors && y.visitors.combined || 0) }],
   extra: Y.map(y => y.visitors && y.visitors.note || ""),
-  footnote: "Only the blue “Festival” bars are paying visitors. COSMOS (online) and U? (city programme) are free to access: they count people reached, not ticket buyers or income. 2020 = online stream only (festival cancelled). Some years are rounded (“about 20,000”) in the report.",
+  footnote: "Only the blue “Festival” bars are paying visitors. COSMOS (online) and U? (city programme) are free to access: they count people reached, not ticket buyers or revenue. 2020 = online stream only (festival cancelled). Some years are rounded (“about 20,000”) in the report.",
 });
-chart("c-ppv", { labels, fmt: v => "€" + v.toFixed(0), aria: "Ticket income per festival visitor",
-  series: [{ name: "Ticket income per festival visitor", type: "line", color: COL.pink, data: Y.map(ticketPerVisitor) }],
-  footnote: "Ticket income ÷ festival visitors. Not the price of one ticket: it mixes passes, day tickets, discounts and fees." });
+chart("c-ppv", { labels, fmt: v => "€" + v.toFixed(0), aria: "Ticket revenue per festival visitor",
+  series: [{ name: "Ticket revenue per festival visitor", type: "line", color: COL.pink, data: Y.map(ticketPerVisitor) }],
+  footnote: "Ticket revenue ÷ festival visitors. Not the price of one ticket: it mixes passes, day tickets, discounts and fees." });
 
 const subs = Y.map(subsidies);
 chart("c-revmix", {
-  labels, stack: true, covid: true, aria: "Income by source",
+  labels, stack: true, covid: true, aria: "Revenue by source",
   series: [{ name: "Tickets", color: COL.pink, data: rev("tickets") },
            { name: "Subsidies (city, province, FPK…)", color: COL.teal, data: subs },
            { name: "COVID support", color: COL.violet, data: rev("covid") },
@@ -233,7 +233,7 @@ ${tk.length ? `<p class="note">Discount tickets sold: ${tk.map(y => `<b>${y.year
 
 /* ---------- heatmap ---------- */
 const rows = [
-  ["Total income", y => totalRev(y)], ["Ticket income", y => y.rev.tickets], ["Subsidies", subsidies], ["Partnerships & sponsors", y => sum(y.rev, ["partnerships", "sponsors"])],
+  ["Total revenue", y => totalRev(y)], ["Ticket revenue", y => y.rev.tickets], ["Subsidies", subsidies], ["Partnerships & sponsors", y => sum(y.rev, ["partnerships", "sponsors"])],
   ["Total costs", totalCost], ["Salaries", salaries, "staff"], ["Artist fees", artistFees, "artists"], ["Venues & locations", y => y.cost.locations, "locations"],
   ["Marketing", y => y.cost.marketing, "marketing"], ["Festival visitors", festVisitors], ["All visitors", totalVisitors],
 ];
@@ -262,11 +262,11 @@ el("timeline").innerHTML = EARLY_YEARS.items.map(i => `<div class="tl"><b>${i.ye
   const maxShare = Math.max(...lastPay.map(x => x.v.pay / x.v.cap));
   const sub = Math.round(100 * subsidies(last) / totalRev(last));
   const cards = [
-    ["good", "No profit motive", `Cumulative result ${Y[0].year}–${last.year}: ${eurShort(cum)} on ${eurShort(cumRev)} income (${(100 * cum / cumRev).toFixed(1)}%). Surpluses in 2020–21 came from COVID support and were later used.`],
+    ["good", "No profit motive", `Cumulative result ${Y[0].year}–${last.year}: ${eurShort(cum)} on ${eurShort(cumRev)} revenue (${(100 * cum / cumRev).toFixed(1)}%). Surpluses in 2020–21 came from COVID support and were later used.`],
     [ratio <= 1.5 ? (ratio < 0.25 ? "warn" : "good") : "warn", "Reasonable reserve", `Equity ${eurShort(last.bal.equity)} = ${(ratio * 100).toFixed(0)}% of yearly costs (about ${(ratio * 12).toFixed(1)} months). The tax authority tolerates up to roughly 1.5× yearly costs, so there is no hoarding${ratio < 0.25 ? " – the buffer is actually thin" : ""}.`],
     [maxShare < 1 ? "good" : "warn", "No excessive pay", `Highest director pay in ${last.year} is ${(maxShare * 100).toFixed(0)}% of the legal WNT maximum. ` + lastPay.map(x => `${x.p.name}: ${eur(x.v.pay)} of ${eur(x.v.cap)}`).join("; ") + "."],
     ["good", "Severance within limits", "Johan Gijsen's 2022 termination payment of €33,362 is below the legal maximum of €75,000."],
-    ["info", "Public money", `${sub}% of ${last.year} income is subsidy (city, province, funds). Typical for a cultural ANBI and not a problem by itself.`],
+    ["info", "Public money", `${sub}% of ${last.year} revenue is subsidy (city, province, funds). Typical for a cultural ANBI and not a problem by itself.`],
     ["good", "Transparency", `Annual reports and director pay are published on the foundation's <a href="${SITE.anbiPage}">ANBI page</a>, as required.`],
     ["warn", "Watch-outs", `Deficits in 2022–2024 (total ${eurShort(Y.filter(y => y.year >= 2022 && y.year <= 2024).reduce((s, y) => s + y.result, 0))}) reduced the buffer. Not published (not required): fees per band, passes vs day tickets.`],
   ];

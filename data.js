@@ -104,7 +104,7 @@ const YEARS = [
   },
   {
     year: 2024,
-    visitors: { festival: 19443, cosmos: 32595, city: 4280, other: 4475, countries: 51 },
+    visitors: { festival: 19443, cosmos: 32595, city: 4280, other: 4475, countries: 51, note: "“Other” = visitors of other activities (“overige activiteiten” in the report), outside the festival, COSMOS and U? programmes." },
     rev: { tickets: 794093, partnerships: 141500, sponsors: 3720, horeca: 0, merch: 8520, participants: 0, otherEarned: 29879, indirect: 2137,
            individuals: 8341, companies: 15908, funds: 254569, fpk: 414631, province: 135000, city: 330810, otherPublic: 79613, covid: 0 },
     cost: { staffCore: 290438, overhead: 103483, staffTemp: 412473, artists: 576076, artistsOther: 9713, otherPeople: 3409, locations: 384715, program: 371209, marketing: 224427, education: 0 },

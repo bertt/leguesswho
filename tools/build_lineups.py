@@ -6,9 +6,10 @@ Sources (all public):
   - leguesswho.com news posts (initial line-up, additions, full program)  -> names + "billing"
   - leguesswho.com/archive/<year>/line-up and /lineup (2026)               -> names (partial for old years)
   - blokkenschema.nl/le-guess-who-<year>/line-up (2023-2025)               -> names
-  - clashfinder.com/s/lgw<yy> (2017, 2021-2026)                            -> room, start time and slot length per act (not 2018/2019)
+  - clashfinder.com/s/lgw<yy> (2017, 2021-2025)                            -> room, start time and slot length per act (not 2018/2019)
+  - tools/timetable_2026.json (leguesswho.com/timetable via scrape_timetable.py) -> the same for 2026
 """
-import html, json, os, re, sys, unicodedata
+import datetime, html, json, os, re, sys, unicodedata
 import requests
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -131,15 +132,17 @@ def blokken(year):
 
 
 CLASH_YEARS = (2017, 2021, 2022, 2023, 2024, 2025, 2026)  # clashfinder.com/s/lgw<yy> exists for these years
+OFFICIAL_TIMETABLE = (2026,)  # these years use tools/timetable_<year>.json (tools/scrape_timetable.py) instead of clashfinder
+DAY0 = {2026: "2026-11-05"}  # the Thursday of the festival
 DAYS = ["Thu", "Fri", "Sat", "Sun", "Mon", "Tue", "Wed"]
 PLAIN_CURATORS = {"Curator: clipping."}  # clipping. is a hip-hop trio doing a normal set, not a commissioned project
 # talks and panels that are on the line-up page but are not paid concerts
 PANELS = re.compile(r"^(Right Relations:|Artistic Freedom Under Threat:|Black Sonic Technologies:|Diasporic Soundscapes:|EPHEMERA:|Legacies of Resistance:|"
                     r"On Sound as Substance:|Palestinian Sound Archive:|Tech, Sound, Power:|The Art of Dissent:|The Politics of Culture:)", re.I)
 # approximate room size -> 0-100 (the timetable position is the strongest public headliner signal)
-STAGES = [(r"grote zaal\b", 92), (r"ronda", 100), (r"stadsschouwburg.*main", 55), (r"pandora(?!.*(foyer|studio))|^tv pandora", 60),
-          (r"cloud nine", 45), (r"hertz", 55), (r"domkerk|jacobikerk|janskerk|pieterskerk", 50), (r"theater utrecht (theater|koepel)", 40),
-          (r"kapitaal|blauwe zaal", 40), (r"db's main", 40), (r"db's bar", 30), (r"foyer|studio", 35)]
+STAGES = [(r"grote zaal\b", 92), (r"ronda", 100), (r"stadsschouwburg", 55), (r"pandora(?!.*(foyer|studio))|^tv pandora", 60),
+          (r"cloud nine", 45), (r"hertz", 55), (r"domkerk|jacobikerk|janskerk|pieterskerk", 50), (r"theater utrecht (theater|koepel)|(theater|koepel) zaal, theater utrecht", 40),
+          (r"kapitaal|blauwe zaal", 40), (r"db's main|main (stage|room), db's", 40), (r"db's bar|bar stage, db's", 30), (r"foyer|studio", 35)]
 
 
 def stage_score(name):
@@ -150,17 +153,31 @@ def stage_score(name):
     return 25
 
 
+def official_items(year):
+    """(hours since Thursday 00:00, minutes, name, stage) from tools/timetable_<year>.json, the official timetable (see scrape_timetable.py)"""
+    base = datetime.date.fromisoformat(DAY0[year])
+    items = []
+    for s in json.load(open(os.path.join(ROOT, "tools", f"timetable_{year}.json"), encoding="utf8")):
+        d = (datetime.date.fromisoformat(s["day"]) - base).days
+        stage = re.sub(r"^(.+), (TivoliVredenburg|Theater Utrecht|dB's|Stadsschouwburg|Centraal Museum|Slachtstraat Filmtheater)$", r"\2 \1", s["stage"])
+        items.append((d * 24 + s["start"], (s["end"] - s["start"]) * 60, s["name"], stage))
+    return items
+
+
 def clash(year):
-    """{key: {n, s (best room 0-100), d (longest slot, minutes), p (prime time), o (opening/closing)}} from the clashfinder timetable"""
-    c = get(f"https://clashfinder.com/s/lgw{year % 100}/", f"clash_{year}")
+    """{key: {n, s (best room 0-100), d (longest slot, minutes), p (prime time), o (opening/closing)}} from the clashfinder timetable (the official timetable for 2026)"""
     out, items = {}, []
-    for part in c.split('<div class="stageContainer">')[1:]:
-        m = re.search(r'class="stageName">(.*?)</p>', part)
-        stage = html.unescape(m.group(1)) if m else ""
-        shows = [(int(s), int(e), clean(txt(nm))) for s, e, nm in re.findall(r'data-start="(\d+)" data-end="(\d+)"[^>]*><div class="actNmWrap"><h6 class="actNm">(.*?)</h6>', part)]
-        for s, e, nm in shows:
-            if (e - s) / 60000 < 240 and key(nm) and not EXCLUDE.search(nm):
-                items.append((s / 3600000, (e - s) / 60000, nm, stage))  # start = hours since Thursday 00:00
+    if year in OFFICIAL_TIMETABLE:
+        items = [i for i in official_items(year) if i[1] <= 240 and key(i[2]) and not EXCLUDE.search(i[2])]
+    else:
+        c = get(f"https://clashfinder.com/s/lgw{year % 100}/", f"clash_{year}")
+        for part in c.split('<div class="stageContainer">')[1:]:
+            m = re.search(r'class="stageName">(.*?)</p>', part)
+            stage = html.unescape(m.group(1)) if m else ""
+            shows = [(int(s), int(e), clean(txt(nm))) for s, e, nm in re.findall(r'data-start="(\d+)" data-end="(\d+)"[^>]*><div class="actNmWrap"><h6 class="actNm">(.*?)</h6>', part)]
+            for s, e, nm in shows:
+                if (e - s) / 60000 < 240 and key(nm) and not EXCLUDE.search(nm):
+                    items.append((s / 3600000, (e - s) / 60000, nm, stage))  # start = hours since Thursday 00:00
     last = max((int((h - 6) // 24) for h, _, _, st in items if stage_score(st) >= 45), default=0)
     for h, dur, nm, stage in items:
         sc, big = stage_score(stage), stage_score(stage) >= 45

@@ -249,6 +249,10 @@ rows.forEach(([name, fn, rk]) => {
 });
 el("heatmap").innerHTML = ht + "</tbody></table>";
 
+/* ---------- early years ---------- */
+el("early-note").innerHTML = esc(EARLY_YEARS.note) + ` <a href="${EARLY_YEARS.source}">Source</a>`;
+el("timeline").innerHTML = EARLY_YEARS.items.map(i => `<div class="tl"><b>${i.year}</b><div>${i.days ? `<span class="tag info">${i.days} day${i.days > 1 ? "s" : ""}</span>` : ""}<p>${esc(i.text)}</p></div></div>`).join("");
+
 /* ---------- ANBI check ---------- */
 (function () {
   const cum = Y.reduce((s, y) => s + y.result, 0), cumRev = Y.reduce((s, y) => s + totalRev(y), 0);

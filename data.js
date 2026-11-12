@@ -244,5 +244,25 @@ const SUPERVISORY = {
   text: "Unpaid in 2025. From 1 January 2026 members receive €200 per meeting (chair €250). The board is chaired by Hans van Soelen (former head of cultural affairs, Utrecht); 2025 members: Hans van Soelen, Sem Bakker, Jorien Waanders, Mark Laagewaard, Ilayda Hagens, Nancy Poleon. The foundation follows the Cultural Governance Code.",
 };
 
+/*
+ * Early years (2007-2016): no annual accounts are published for these years, only qualitative facts.
+ * Source: nl.wikipedia.org/wiki/Le_Guess_Who%3F. Add or edit rows freely; they are shown in order.
+ */
+const EARLY_YEARS = {
+  source: "https://nl.wikipedia.org/wiki/Le_Guess_Who%3F",
+  note: "No annual accounts for 2007–2016 are published on the ANBI page, so there are no financial charts for these years. 2016 is only available as a comparison column in the 2017 report. The timeline below is based on public sources (Wikipedia).",
+  items: [
+    { year: 2007, days: 2, text: "First edition, founded by Johan Gijsen and Bob van Heur. Two days." },
+    { year: 2008, days: 3, text: "Grows to three days." },
+    { year: 2009, days: 4, text: "Four days." },
+    { year: 2010, days: 5, text: "Peak length so far: five days." },
+    { year: 2011, days: 3, text: "Scaled back to three days." },
+    { year: 2013, text: "Wins the “IJzeren Podiumdier” (Iron Stage Animal) for best festival of 2012, awarded by the Dutch association of pop venues and festivals (VNPF)." },
+    { year: 2014, text: "Wins the same award in two categories: best festival and best programmer." },
+    { year: 2016, text: "Receives a multi-year subsidy of €125,000 per year from the Performing Arts Fund (Fonds Podiumkunsten). Earliest year with figures on this site." },
+    { year: 2019, text: "About 20,000 visitors from 61 countries." },
+  ],
+};
+
 const SOURCES = YEARS.filter(y => y.report).map(y => ({ year: y.year, url: y.report }))
   .concat([{ year: "plan", url: BASE + "Samenvatting%20meerjarenplan%2025-28.pdf", label: "Plan 2025–2028 (summary)" }]);

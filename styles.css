@@ -67,6 +67,11 @@ h3{margin:0 0 8px;font-size:1.05rem}
 .insight h3{margin:6px 0}.insight p{margin:.3em 0;color:var(--mute);font-size:.94rem}
 .insight .yr{font-weight:700;color:var(--yellow)}
 .fun .icon{font-size:1.8rem}.fun b{display:block;font-size:1.7rem;color:var(--pink)}.fun p{margin:0;color:var(--mute);font-size:.92rem}
+.timeline{border-left:2px solid var(--line);margin-left:6px;padding-left:22px}
+.tl{position:relative;display:flex;gap:16px;padding:8px 0}
+.tl::before{content:"";position:absolute;left:-29px;top:18px;width:11px;height:11px;border-radius:50%;background:var(--pink);box-shadow:0 0 0 4px var(--bg)}
+.tl>b{min-width:48px;color:var(--yellow);font-size:1.1rem}
+.tl p{margin:0;color:var(--mute)}
 .scroll{overflow-x:auto}
 table.heat{border-collapse:collapse;font-size:.82rem;min-width:760px;width:100%}
 .heat th,.heat td{padding:6px 8px;text-align:right}

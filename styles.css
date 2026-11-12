@@ -91,4 +91,8 @@ table.fees td:nth-child(2){text-align:left}table.fees th:nth-child(2){text-align
 
 table.fees{min-width:900px}table.fees .fac{font-size:.8em;text-align:center;white-space:nowrap}table.fees .fac.na{color:#999}
 
-dialog.modal{max-width:min(860px,94vw);max-height:90vh;overflow:auto;border:1px solid #ccc;border-radius:10px;padding:18px 22px}dialog.modal::backdrop{background:rgba(0,0,0,.45)}.yearpick+.more{margin-left:12px}
+dialog.modal{max-width:min(860px,94vw);max-height:90vh;overflow:auto;background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:12px;padding:20px 24px}dialog.modal::backdrop{background:rgba(0,0,0,.6)}
+.feebar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px}
+.info{display:inline-flex;align-items:center;gap:7px;margin:0;background:rgba(91,157,255,.12);color:var(--pink);border:1px solid var(--pink);border-radius:999px;padding:6px 14px;font:inherit;font-size:.85rem;cursor:pointer;transition:background .15s}
+.info:hover,.info:focus-visible{background:rgba(91,157,255,.28);outline:none}
+.info::before{content:"i";display:inline-grid;place-items:center;width:16px;height:16px;border:1.5px solid currentColor;border-radius:50%;font:italic 700 11px Georgia,serif}

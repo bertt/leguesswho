@@ -94,8 +94,10 @@
     <h2>Estimated fee per act</h2>
     <p class="sub">Per-band fees are never published. This is a <b>model</b>, not a fact: the artist budget of the chosen year is spread over the performing acts using a score per act.</p>
     <div class="card">
-      <label class="yearpick">Year <select id="fee-year"></select></label>
-      <button id="fee-info" class="more" type="button">How is the fee calculated?</button>
+      <div class="feebar">
+        <label class="yearpick">Year <select id="fee-year"></select></label>
+        <button id="fee-info" class="info" type="button">How is the fee calculated?</button>
+      </div>
       <p class="note" id="fee-summary"></p>
       <div class="scroll"><div id="fee-table"></div></div>
       <button id="fee-more" class="more" type="button"></button>

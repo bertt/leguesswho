@@ -89,14 +89,14 @@ The "Estimated fee per act" section lets you pick a year, shows the performing a
 
 | Factor | Weight | Scoring |
 |---|---|---|
-| Room | 26% | Largest room on the clashfinder timetable: Ronda 100 (2,000), Grote Zaal 92 (1,717), Stadsschouwburg Main Room 55, Hertz 55 (543), Pandora 60 (625), churches 50, Cloud Nine 45 (400), dB's Main Stage 40, dB's Bar 30, other 25–40 |
-| Prime time | 17% | Set starts 20:00–23:00 in a room of Hertz size or bigger = 100, 19:00–20:00 or 23:00–24:00 = 50, otherwise 20 |
+| Room | 29% | Largest room on the clashfinder timetable: Ronda 100 (2,000), Grote Zaal 92 (1,717), Stadsschouwburg Main Room 55, Hertz 55 (543), Pandora 60 (625), churches 50, Cloud Nine 45 (400), dB's Main Stage 40, dB's Bar 30, other 25–40 |
+| Prime time | 20% | Set starts 20:00–23:00 in a room of Hertz size or bigger = 100, 19:00–20:00 or 23:00–24:00 = 50, otherwise 20 |
 | Opener / closer | 9% | Opens the festival (Thursday, start 18:00–20:30) or closes it (last day, start 19:00–21:00) in Grote Zaal or Ronda = 100, otherwise 0 |
 | Slot length | 8% | Longest set in minutes, scaled linearly: 30 min or less = 0, 60 = 33, **75 = 50**, 90 = 67, 120+ = 100 |
 | Billing | 17% | Curator or first announcement = 100, later announcement = 80, additions list = 60, only line-up page = 45 |
 | Ensemble | 4% | Orchestra / band / collective = 100, collaboration = 65, solo or DJ = 15, otherwise 45 |
 | Special commission | 4% | Curator = 100, "presents / premiere / collab" = 50, otherwise 0 |
-| Legend status | 15% | Reputation from Spotify play counts, independent of scheduling: the summed plays of up to 20 tracks of the artist on a log scale (100,000 plays = 0, 10 million = 50, 1 billion = 100). Collaborations take the best score of the parts; there are no manual overrides, so older legends with few streams score low. Not on Spotify = 0. Available for all years |
+| Legend status | 9% | Reputation from Spotify play counts, independent of scheduling: the summed plays of up to 20 tracks of the artist on a log scale (100,000 plays = 0, 10 million = 50, 1 billion = 100). Collaborations take the best score of the parts; there are no manual overrides, so older legends with few streams score low. Not on Spotify = 0. Available for all years |
 
 The weights and their texts live in `FEE_MODEL` in `data.js`; the per-act inputs (`b`, `e`, `c`, `s`, `d`, `p`) in the generated `lineups.js`. There is deliberately no live streaming-popularity factor for the fee itself; the legend factor uses a one-off sample of Spotify play counts instead, generated into `legends.js` by `tools/build_legends.py` (`uv run python tools/build_legends.py`; needs the Spotify desktop app running, resumable).
 

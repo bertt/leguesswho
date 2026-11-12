@@ -187,7 +187,8 @@ chart("c-costmix", {
            { name: "Other programme", color: COL.violet, data: Y.map(y => (y.cost.program || 0) + (y.cost.education || 0)) },
            { name: "Marketing", color: COL.orange, data: Y.map(y => y.cost.marketing || 0) },
            { name: "Office & overhead", color: COL.grey, data: Y.map(y => y.cost.overhead || 0) }],
-  footnote: "The 2025 report moved about €70k from “other programme / locations” into artist fees, so 2025 vs earlier years is not perfectly comparable.",
+  extra: Y.map(y => y.classificationChange ? "Venues &amp; locations: 2024 restated as " + eurShort(y.restated2024.locations) + " (was " + eurShort(Y[Y.indexOf(y) - 1].cost.locations) + ") – costs were moved here from other programme costs." : ""),
+  footnote: "<b>Venues &amp; locations</b> = venue rent, technical production (sound, light, stage), security and permits, paid to locations in the city. The reports show one line without a breakdown. The 2025 report moved costs into this line (and into artist fees): 2024 restated is " + eurShort(last.restated2024 ? last.restated2024.locations : 0) + " instead of " + eurShort(prev.cost.locations) + ", so 2025 is not comparable with earlier years.",
 });
 chart("c-artists", {
   labels, covid: true, aria: "Artist fees",

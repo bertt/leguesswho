@@ -307,6 +307,8 @@ el("timeline").innerHTML = EARLY_YEARS.items.map(i => `<div class="tl"><b>${i.ye
     el("fee-more").textContent = showAll ? "Show top 25 only" : `Show all ${rows.length} acts`;
   };
   sel.addEventListener("change", () => { showAll = false; render(); });
+  el("fee-info").addEventListener("click", () => el("fee-dialog").showModal());
+  el("fee-dialog").addEventListener("click", e => { if (e.target === e.currentTarget) e.currentTarget.close(); });
   el("fee-more").addEventListener("click", () => { showAll = !showAll; render(); });
   render();
 
@@ -320,7 +322,7 @@ el("timeline").innerHTML = EARLY_YEARS.items.map(i => `<div class="tl"><b>${i.ye
   });
 
   el("fee-weights").innerHTML = `<table class="heat"><thead><tr><th>Factor</th><th>Weight</th><th>How it is scored (0–100)</th></tr></thead><tbody>${Object.values(M.weights).map(f => `<tr><td>${esc(f.label)}</td><td>${f.w}%</td><td style="text-align:left">${esc(f.how)}</td></tr>`).join("")}</tbody></table>`;
-  el("fee-formula").innerHTML = `Score = weighted average of the factors (minimum ${M.minScore}). <b>Fee = pool × score² ÷ Σ score² of all acts that year</b>: the square makes fees skewed towards headliners. Pool = artist costs of the year × ${Math.round(M.gageShare * 100)}% (${Math.round(M.gageShareRange[0] * 100)}–${Math.round(M.gageShareRange[1] * 100)}%; the rest is travel, hotel, visas, backline). The 80% interval is the fee × ${M.interval[0]} to × ${M.interval[1]}. Page views are measured in 2026, not in the year of the festival. Acts and rooms come from the foundation's news posts, archive pages, blokkenschema.nl (2023–2025) and the clashfinder timetables (2017, 2021–2026); 2018 and 2019 have no timetable and are less complete. Nothing here is validated against real fees. 2026 uses an assumed artist budget of ${eur(ESTIMATED_ARTIST_COSTS[2026])}.`;
+  el("fee-formula").innerHTML = `Score = weighted average of the factors (minimum ${M.minScore}). <b>Fee = pool × score² ÷ Σ score² of all acts that year</b>: the square makes fees skewed towards headliners. Pool = artist costs of the year × ${Math.round(M.gageShare * 100)}% (${Math.round(M.gageShareRange[0] * 100)}–${Math.round(M.gageShareRange[1] * 100)}%; the rest is travel, hotel, visas, backline). The 80% interval is the fee × ${M.interval[0]} to × ${M.interval[1]}. Acts and rooms come from the foundation's news posts, archive pages, blokkenschema.nl (2023–2025) and the clashfinder timetables (2017, 2021–2026); 2018 and 2019 have no timetable and are less complete. Nothing here is validated against real fees. 2026 uses an assumed artist budget of ${eur(ESTIMATED_ARTIST_COSTS[2026])}.`;
 }
 
 /* ---------- insights, trivia, sources ---------- */

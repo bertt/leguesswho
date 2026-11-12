@@ -95,12 +95,18 @@
     <p class="sub">Per-band fees are never published. This is a <b>model</b>, not a fact: the artist budget of the chosen year is spread over the performing acts using a score per act.</p>
     <div class="card">
       <label class="yearpick">Year <select id="fee-year"></select></label>
+      <button id="fee-info" class="more" type="button">How is the fee calculated?</button>
       <p class="note" id="fee-summary"></p>
       <div class="scroll"><div id="fee-table"></div></div>
       <button id="fee-more" class="more" type="button"></button>
     </div>
     <div class="card"><h3>Fee of the top acts over time</h3><div class="chart" id="c-feetop"></div></div>
-    <div class="card"><h3>How the fee is calculated</h3><div id="fee-weights"></div><p class="note" id="fee-formula"></p></div>
+    <dialog id="fee-dialog" class="modal">
+      <h3>How the fee is calculated</h3>
+      <div class="scroll"><div id="fee-weights"></div></div>
+      <p class="note" id="fee-formula"></p>
+      <form method="dialog"><button class="more" type="submit">Close</button></form>
+    </dialog>
   </section>
 
   <section id="directors">

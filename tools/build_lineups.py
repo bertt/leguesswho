@@ -45,7 +45,7 @@ CANCELLED = {
 NOT_PERFORMING = {2026: ["Ciro Monoarfa Goudsmit", "Uta"]}  # Sound & Culture Summit session participants
 RENAME = {2026: {"Mai Mai Mai & Osama Abu Ali": "Mai Mai Mai & Tareq Abboushi"}}
 # 2026: only acts on the official leguesswho.com/lineup (or timetable) are kept; these are spelled differently there
-OFFICIAL_ALIASES_2026 = ["ROÍS", "Robert Nikolajev", "Ibrahim Owais", "Sima nos é só nós", "NAKID", "OCCII", "Eris Drew b2b Octo Octa",
+OFFICIAL_ALIASES_2026 = ["ROÍS", "Robert Nikolajev", "Ibrahim Owais", "Sima nos é só nós", "NAKID", "OCCII",
                          "Khadija El Warzazia", "Acácia Maio", "Frequência Tabanka DJ set + MF Andrade", "'gyeol'", "‘gyeol’"]
 ITEM = r'<div data-order="[^"]*" class="item"[^>]*?data-project="([^"]*)"[^>]*>.*?<h3 class="h6"><a[^>]*>([^<]*)</a>'
 

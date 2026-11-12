@@ -72,6 +72,10 @@ The report normally appears on <https://leguesswho.com/anbi> in the course of 20
 
 Tip: the PDFs may be scanned or have no text layer (2018 and 2025 were like that). Read the numbers visually from the statements in that case, and double-check the totals.
 
+## Artists with multiple shows
+
+The "Artists with multiple shows" section lists, per year, the acts that play more than once, with day, time and room of each show. It is generated from the clashfinder timetables (2017, 2021–2026) into `lineups.js` (`x` = number of shows, `w` = day, time and room list, only present when `x` > 1) by `tools/build_lineups.py`. Placeholders (`TBC`) and exhibitions are excluded.
+
 ## Estimated fee per act (model, not published data)
 
 The "Estimated fee per act" section lets you pick a year, shows the performing acts ranked by estimated fee, and charts the fee of the top acts over time. The method (weights, formula, 80% interval) is described on the page and lives in `FEE_MODEL` in `data.js`. Per-act inputs are in the generated `lineups.js`.
@@ -80,7 +84,7 @@ The "Estimated fee per act" section lets you pick a year, shows the performing a
 
 1. **Pool per year** = `cost.artists` from the annual report × `gageShare` (70%, range 59–80%). The 70% is my assumption, not a published number: artist costs also contain travel, hotel, visas and backline. All fees scale linearly with it.
 2. **Score per act (0–100)** = weighted average of the factors below. Factors that are unavailable (room, prime time and slot length for 2018 and 2019) are left out and the remaining weights are renormalised. Minimum score 5. Panels and talks (flagged in the table) get a fixed score of 1, so they receive almost no fee.
-3. **Fee** = pool × score² ÷ Σ score² of all acts of that year. The square skews the pool towards high-scoring acts.
+3. **Fee** = pool × score² ÷ Σ (shows × score²) of all acts of that year. The square skews the pool towards high-scoring acts. An act with several shows (clashfinder timetable) counts once per show with the same fee per show, so its total fee is shows × the per-show fee (`x` in `lineups.js`).
 4. **80% interval** = fee × 0.55 to fee × 1.8 (uncertainty of the pool share and of the scores).
 
 | Factor | Weight | Scoring |

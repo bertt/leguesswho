@@ -287,10 +287,10 @@ el("timeline").innerHTML = EARLY_YEARS.items.map(i => `<div class="tl"><b>${i.ye
       const f = { stage: a.s, position: a.p, opening: a.o, duration: a.d == null ? null : clamp((a.d - 30) / 90 * 100), billing: a.b, ensemble: a.e, commission: a.c, legend: LEGENDS[a.n] || 0 };
       const keys = Object.keys(M.weights).filter(k => f[k] != null), ws = keys.reduce((s, k) => s + M.weights[k].w, 0);
       const score = a.k ? M.panelScore : Math.max(M.minScore, keys.reduce((s, k) => s + M.weights[k].w * f[k], 0) / ws);
-      return { ...a, f, score };
+      return { ...a, f, score, x: a.x || 1 };
     });
-    const tot = rows.reduce((s, r) => s + r.score * r.score, 0);
-    rows.forEach(r => r.fee = pool * r.score * r.score / tot);
+    const tot = rows.reduce((s, r) => s + r.x * r.score * r.score, 0);
+    rows.forEach(r => { r.one = pool * r.score * r.score / tot; r.fee = r.one * r.x; });
     return rows.sort((a, b) => b.fee - a.fee);
   };
   const k = v => "€" + nf.format(Math.round(v / 100) / 10) + "k";
@@ -303,7 +303,7 @@ el("timeline").innerHTML = EARLY_YEARS.items.map(i => `<div class="tl"><b>${i.ye
     el("fee-summary").innerHTML = `<b>${yr}</b>: artist costs ${eur(p.costs)}${p.estimate ? " (<b>estimate</b>, no annual report yet)" : ""} × ${Math.round(M.gageShare * 100)}% pure fees = <b>${eur(p.pool)}</b> spread over ${rows.length} acts found (average ${k(p.pool / rows.length)}). If the real number of acts is higher than the ${rows.length} found, fees are overestimated.`;
     const fk = Object.keys(M.weights);
     el("fee-table").innerHTML = `<table class="heat fees"><thead><tr><th>#</th><th>Act</th><th>Room</th><th>Start</th><th>Length</th><th>Score</th><th>Estimated fee</th><th>80% interval</th>${fk.map(key => `<th class="fac" title="${esc(M.weights[key].label)} – weight ${M.weights[key].w}%">${esc(M.weights[key].short)}<br><small>${M.weights[key].w}%</small></th>`).join("")}</tr></thead><tbody>${list.map((r, i) =>
-      `<tr${r.u ? ' class="cur"' : ""}><td>${i + 1}</td><td>${esc(r.n)}${r.k ? ' <small>(panel)</small>' : ""}</td><td>${r.r ? esc(r.r.replace(/^(TivoliVredenburg|TV)( - |\s+)/, "")) : "–"}</td><td>${r.t ? esc(r.t) : "–"}</td><td>${r.r && r.d ? r.d + " min" : "–"}</td><td>${r.score.toFixed(0)}</td><td><b>${k(r.fee)}</b></td><td>${k(r.fee * M.interval[0])} – ${k(r.fee * M.interval[1])}</td>${fk.map(key => r.f[key] == null ? '<td class="fac na">–</td>' : `<td class="fac" ${key === "duration" ? `title="${r.f[key] >= 100 ? "120+" : r.f[key] <= 0 ? "30 or less" : Math.round(30 + r.f[key] * 0.9)} min"` : ""} style="background:rgba(60,120,200,${(r.f[key] / 100 * 0.35).toFixed(2)})">${Math.round(r.f[key])}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
+      `<tr${r.u ? ' class="cur"' : ""}><td>${i + 1}</td><td>${esc(r.n)}${r.k ? ' <small>(panel)</small>' : ""}${r.x > 1 ? ` <small>(${r.x}× performing)</small>` : ""}</td><td>${r.r ? esc(r.r.replace(/^(TivoliVredenburg|TV)( - |\s+)/, "")) : "–"}</td><td>${r.t ? esc(r.t) : "–"}</td><td>${r.r && r.d ? r.d + " min" : "–"}</td><td>${r.score.toFixed(0)}</td><td><b>${k(r.fee)}</b>${r.x > 1 ? `<br><small>${r.x} × ${k(r.one)}</small>` : ""}</td><td>${k(r.fee * M.interval[0])} – ${k(r.fee * M.interval[1])}</td>${fk.map(key => r.f[key] == null ? '<td class="fac na">–</td>' : `<td class="fac" ${key === "duration" ? `title="${r.f[key] >= 100 ? "120+" : r.f[key] <= 0 ? "30 or less" : Math.round(30 + r.f[key] * 0.9)} min"` : ""} style="background:rgba(60,120,200,${(r.f[key] / 100 * 0.35).toFixed(2)})">${Math.round(r.f[key])}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
     el("fee-more").textContent = showAll ? "Show top 25 only" : `Show all ${rows.length} acts`;
   };
   sel.addEventListener("change", () => { showAll = false; render(); });
@@ -324,7 +324,7 @@ el("timeline").innerHTML = EARLY_YEARS.items.map(i => `<div class="tl"><b>${i.ye
   el("fee-steps").innerHTML = `<ol class="steps">
     <li><b>Pool</b> – artist costs of the year × ${Math.round(M.gageShare * 100)}% (range ${Math.round(M.gageShareRange[0] * 100)}–${Math.round(M.gageShareRange[1] * 100)}%; the rest is travel, hotel, visas, backline). This share is an assumption.</li>
     <li><b>Score</b> – weighted average (0–100) of the factors below, minimum ${M.minScore}.</li>
-    <li><b>Fee</b> = pool × score² ÷ Σ score² of all acts that year. The square favours headliners.</li>
+    <li><b>Fee</b> = pool × score² ÷ Σ score² of all acts that year. The square favours headliners. An act that plays more than once counts once per show and gets the same fee for each show.</li>
     <li><b>80% interval</b> = fee × ${M.interval[0]} to × ${M.interval[1]}.</li></ol>`;
   el("fee-weights").innerHTML = `<div class="facs">${Object.values(M.weights).map(f => `<div class="fac-row"><div class="fac-head"><b>${esc(f.label)}</b><span>${f.w}%</span></div><div class="fac-bar"><i style="width:${f.w * 100 / Math.max(...Object.values(M.weights).map(x => x.w))}%"></i></div><p>${esc(f.how)}</p></div>`).join("")}</div>`;
   el("fee-formula").innerHTML = `Acts and rooms come from the foundation's news posts, archive pages, blokkenschema.nl (2023–2025) and the clashfinder timetables (2017, 2021–2026); 2018 and 2019 have no timetable and are less complete. Nothing here is validated against real fees. 2026 uses an assumed artist budget of ${eur(ESTIMATED_ARTIST_COSTS[2026])}.`;
@@ -342,6 +342,29 @@ el("caveats").innerHTML = [
 ].map(t => `<li>${t}</li>`).join("");
 el("source-links").innerHTML = `<a href="${SITE.anbiPage}">Official ANBI page</a><a href="data.js">Dataset used here (data.js)</a>` + SOURCES.map(s => `<a href="${s.url}">Annual report ${s.year}</a>`).join("");
 window.addEventListener("scroll", () => el("tip").hidden = true, { passive: true });
+
+/* ---------- artists with multiple shows ---------- */
+{
+  const years = Object.keys(LINEUPS).map(Number).filter(y => LINEUPS[y].some(a => a.w)).sort((a, b) => b - a);
+  const sel = el("multi-year");
+  sel.innerHTML = years.map(y => `<option value="${y}">${y}</option>`).join("");
+  const render = () => {
+    const rows = LINEUPS[+sel.value].filter(a => a.x > 1).sort((a, b) => b.x - a.x || a.n.localeCompare(b.n));
+    el("multi-summary").innerHTML = `<b>${sel.value}</b>: ${rows.length} acts play more than once, ${rows.reduce((s, a) => s + a.x, 0)} shows in total.`;
+    el("multi-table").innerHTML = `<table class="heat"><thead><tr><th>Act</th><th>Shows</th><th>When and where</th></tr></thead><tbody>${rows.map(a =>
+      `<tr><td>${esc(a.n)}</td><td>${a.x}×</td><td>${a.w.map(esc).join("<br>")}</td></tr>`).join("")}</tbody></table>`;
+  };
+  sel.addEventListener("change", render);
+  render();
+  const asc = years.slice().reverse(), cnt = (y, f) => LINEUPS[y].filter(a => f(a.x || 1)).length;
+  chart("c-multi", {
+    labels: asc.map(String), fmt: num, aria: "Number of acts playing 2, 3 or 4+ times per year",
+    series: [{ name: "2 shows", color: COL.pink, data: asc.map(y => cnt(y, x => x === 2)) },
+             { name: "3 shows", color: COL.yellow, data: asc.map(y => cnt(y, x => x === 3)) },
+             { name: "4 or more shows", color: COL.red, data: asc.map(y => cnt(y, x => x >= 4)) }],
+    footnote: "Number of acts per year with 2, 3 or 4+ shows on the clashfinder timetable. 2018 and 2019 are missing (no timetable); timetables of some years may be incomplete.",
+  });
+}
 
 /* highlight the tab of the section in view */
 (function () {

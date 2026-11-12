@@ -277,7 +277,6 @@ el("timeline").innerHTML = EARLY_YEARS.items.map(i => `<div class="tl"><b>${i.ye
 {
   const M = FEE_MODEL, feeYears = Object.keys(LINEUPS).map(Number).sort((a, b) => a - b);
   const clamp = v => Math.max(0, Math.min(100, v));
-  const drawScore = v => clamp((Math.log10(v + 1) - Math.log10(M.drawViews[0])) / (Math.log10(M.drawViews[1]) - Math.log10(M.drawViews[0])) * 100);
   const poolOf = yr => {
     const rep = Y.find(y => y.year === yr), costs = rep ? rep.cost.artists : ESTIMATED_ARTIST_COSTS[yr];
     return { costs, estimate: !rep, pool: costs == null ? null : costs * M.gageShare };
@@ -285,7 +284,7 @@ el("timeline").innerHTML = EARLY_YEARS.items.map(i => `<div class="tl"><b>${i.ye
   const fees = yr => {
     const { pool } = poolOf(yr);
     const rows = LINEUPS[yr].map(a => {
-      const f = { stage: a.s, position: a.p, draw: drawScore(a.v), duration: a.d == null ? null : clamp((a.d - 30) / 60 * 100), billing: a.b, ensemble: a.e, commission: a.c };
+      const f = { stage: a.s, position: a.p, duration: a.d == null ? null : clamp((a.d - 30) / 60 * 100), billing: a.b, ensemble: a.e, commission: a.c };
       const keys = Object.keys(M.weights).filter(k => f[k] != null), ws = keys.reduce((s, k) => s + M.weights[k].w, 0);
       const score = Math.max(M.minScore, keys.reduce((s, k) => s + M.weights[k].w * f[k], 0) / ws);
       return { ...a, f, score };

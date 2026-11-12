@@ -68,19 +68,18 @@ The "Estimated fee per act" section lets you pick a year, shows the performing a
 
 | Factor | Weight | Scoring |
 |---|---|---|
-| Room | 30% | Largest room on the clashfinder timetable: Grote Zaal 100, Ronda 85, Pandora 65, Stadsschouwburg Main Room 60, Cloud Nine / churches 50, Hertz 45, other 25–40 |
-| Prime time | 15% | Set starts 20:00–23:00 in a room of Hertz size or bigger = 100, 19:00–20:00 or 23:00–24:00 = 50, otherwise 20 |
-| Draw | 20% | Wikipedia page views (60 days, log scale: 30 = 0, 50,000+ = 100). No page = 0 (about 25–30% of acts have one) |
+| Room | 35% | Largest room on the clashfinder timetable: Grote Zaal 100, Ronda 85, Pandora 65, Stadsschouwburg Main Room 60, Cloud Nine / churches 50, Hertz 45, other 25–40 |
+| Prime time | 20% | Set starts 20:00–23:00 in a room of Hertz size or bigger = 100, 19:00–20:00 or 23:00–24:00 = 50, otherwise 20 |
 | Slot length | 10% | Longest set: 30 min = 0, 90+ min = 100 |
-| Billing | 15% | Curator or first announcement = 100, later announcement = 80, additions list = 60, only line-up page = 45 |
-| Ensemble | 5% | Orchestra / band / collective = 100, collaboration = 65, solo or DJ = 15, otherwise 45 |
+| Billing | 20% | Curator or first announcement = 100, later announcement = 80, additions list = 60, only line-up page = 45 |
+| Ensemble | 10% | Orchestra / band / collective = 100, collaboration = 65, solo or DJ = 15, otherwise 45 |
 | Special commission | 5% | Curator = 100, "presents / premiere / collab" = 50, otherwise 0 |
 
-The weights and their texts live in `FEE_MODEL` in `data.js`; the per-act inputs (`v`, `b`, `e`, `c`, `s`, `d`, `p`) in the generated `lineups.js`.
+The weights and their texts live in `FEE_MODEL` in `data.js`; the per-act inputs (`b`, `e`, `c`, `s`, `d`, `p`) in the generated `lineups.js`. There is deliberately no popularity factor (Wikipedia page views were dropped: most acts have no page, and Spotify misses many acts too).
 
-Known limitations: the pool is divided over the acts *found*, so incomplete years overestimate fees (2018 and 2019 have no timetable and are least complete); Wikipedia views are from the time of generation, not the festival year; acts without a Wikipedia page get draw 0; known cancellations are listed in `CANCELLED` in `tools/build_lineups.py` and may be incomplete; `WIKI_TITLE` there fixes acts whose Wikipedia page the automatic search misses.
+Known limitations: the pool is divided over the acts *found*, so incomplete years overestimate fees (2018 and 2019 have no timetable, so only billing, ensemble and commission count there, and they are least complete); known cancellations are listed in `CANCELLED` in `tools/build_lineups.py` and may be incomplete.
 
-**Regenerate the acts** (public sources: news posts and archive on leguesswho.com, blokkenschema.nl for 2023–2025, clashfinder.com timetables for room, start time and slot length (2017, 2021–2026), Wikipedia page views as name-recognition proxy):
+**Regenerate the acts** (public sources: news posts and archive on leguesswho.com, blokkenschema.nl for 2023–2025, clashfinder.com timetables for room, start time and slot length (2017, 2021–2026)):
 
 ```
 uv run --with requests python tools/build_lineups.py

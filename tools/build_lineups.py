@@ -6,11 +6,9 @@ Sources (all public):
   - leguesswho.com news posts (initial line-up, additions, full program)  -> names + "billing"
   - leguesswho.com/archive/<year>/line-up and /lineup (2026)               -> names (partial for old years)
   - blokkenschema.nl/le-guess-who-<year>/line-up (2023-2025)               -> names
-  - clashfinder.com/s/lgw<yy> (2017, 2021-2026)                            -> room + slot length per act (not 2018/2019)
-  - Wikipedia page views (last 60 days)                                    -> "draw" (name recognition proxy)
+  - clashfinder.com/s/lgw<yy> (2017, 2021-2026)                            -> room, start time and slot length per act (not 2018/2019)
 """
-import html, json, os, re, sys, time, unicodedata
-from concurrent.futures import ThreadPoolExecutor
+import html, json, os, re, sys, unicodedata
 import requests
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -38,8 +36,6 @@ EXCLUDE = re.compile(r"\b(talk|lecture|workshop|panel|summit|exhibition|film|scr
                      r"making of|archiving|book launch|podcast|radio show|guided tour|soundtrack|stream|record fair|masterclass|introduction|radio|records|hku|outernational|pic[oó]|refuge worldwide|batekoo|los angles|kapitaal|stranded fm|curated programs?|community)\b", re.I)
 SKIP_LINES = re.compile(r"^(general program|general programme|tickets|festival news|curated by|le guess who\?? ?(&|and) u|more news|special projects?|sounds of places|cosmos|u\?|"
                         r"new program additions|all newly announced artists:?|and many more|read more|here|untitled|newsletter|subscribe|accept cookies)", re.I)
-MUSIC = re.compile(r"(band|music|singer|rapper|\bdj\b|producer|composer|ensemble|duo|trio|quartet|group|orchestra|guitar|pian|artist|songwriter|vocal|percussion|sax|drumm|"
-                   r"rock|electronic|jazz|punk|folk|hip hop|metal|collective|rap\b|record|instrumental|noise|ambient|pop|soul|funk|reggae|dub|techno|house)", re.I)
 # Acts that were announced but did not perform (from the foundation's program-update posts), and acts that are not performers
 CANCELLED = {
     2017: ["Oumou Sangaré"],
@@ -166,76 +162,6 @@ def clash(year):
     return out
 
 
-WIKI = "https://en.wikipedia.org/w/api.php"
-
-
-def wiki_views(q):
-    p = os.path.join(CACHE, "wiki_" + key(q)[:80] + ".json")
-    if os.path.exists(p):
-        return json.load(open(p, encoding="utf8"))
-    best = {"views": 0, "title": None}
-    try:
-        r = {}
-        for attempt in range(5):
-            resp = S.get(WIKI, params={"action": "query", "format": "json", "generator": "search", "gsrsearch": q, "gsrlimit": 4,
-                                       "prop": "description|pageviews", "pvipdays": 60, "redirects": 1}, timeout=40)
-            if resp.status_code == 200 and resp.text.startswith("{") and "error" not in resp.text[:60]:
-                r = resp.json()
-                break
-            time.sleep(2 * (attempt + 1))
-        else:
-            raise RuntimeError("throttled")
-        for pg in sorted(r.get("query", {}).get("pages", {}).values(), key=lambda x: x.get("index", 9)):
-            title = pg["title"]
-            base = re.sub(r"\s*\(.*?\)\s*$", "", title)
-            par = re.search(r"\((.*?)\)\s*$", title)
-            if key(base) != key(q):
-                continue
-            if not MUSIC.search(pg.get("description", "") + " " + (par.group(1) if par else "")):
-                continue
-            best = {"views": sum(x or 0 for x in (pg.get("pageviews") or {}).values()), "title": title}
-            break
-    except Exception as e:
-        print("  wiki error", q, e, file=sys.stderr)
-        return best
-    json.dump(best, open(p, "w", encoding="utf8"))
-    return best
-
-
-def segments(name):
-    base = re.sub(r"\s*\((live|solo|DJ set|DJ|b2b)[^)]*\)\s*$|\s+(solo|live)$", "", name, flags=re.I).strip()
-    left = re.split(r"\s+(?:presents?|performing|plays|performs)\b:?", base, flags=re.I)[0].strip() or base
-    left = re.sub(r"['’]s\s.*$", "", left) if re.search(r"['’]s\s", left) else left
-    parts = [x.strip() for x in re.split(r"\s+(?:&|\+|x|b2b|feat\.?|ft\.?|with|meets|vs\.?)\s+|\s*,\s*", left, flags=re.I) if x.strip()]
-    return list(dict.fromkeys([base, left] + parts))[:4]
-
-
-# acts the automatic search misses: act name -> exact Wikipedia title
-WIKI_TITLE = {"The Ex & Brass Unbound": "The Ex (band)"}
-
-
-def wiki_exact(title):
-    p = os.path.join(CACHE, "wikit_" + key(title)[:80] + ".json")
-    if os.path.exists(p):
-        return json.load(open(p, encoding="utf8"))
-    r = S.get(WIKI, params={"action": "query", "format": "json", "titles": title, "prop": "pageviews", "pvipdays": 60, "redirects": 1}, timeout=40).json()
-    pg = next(iter(r["query"]["pages"].values()))
-    best = {"views": sum(x or 0 for x in (pg.get("pageviews") or {}).values()), "title": pg["title"]}
-    json.dump(best, open(p, "w", encoding="utf8"))
-    return best
-
-
-def draw_of(name):
-    if name in WIKI_TITLE:
-        return wiki_exact(WIKI_TITLE[name])
-    b = {"views": 0, "title": None}
-    for s in segments(name):
-        w = wiki_views(s)
-        if w["views"] > b["views"]:
-            b = w
-    return b
-
-
 def ensemble_score(n):
     if re.search(r"orchestra|ensemble|choir|philharmonic|sinfonietta|kolektiv|collective|troop|big band|\bband\b|quartet|\bsextet|\bseptet|singers|soundsystem", n, re.I):
         return 100
@@ -299,27 +225,22 @@ def main():
             print("  clashfinder:", len(cl), "acts, added", len(cl) - len(used))
         res[y] = (acts, {key(c) for c in curators if len(key(c)) > 3})
         print("  acts", len(acts), "curators", len(res[y][1]))
-    allnames = sorted({a["n"] for acts, _ in res.values() for a in acts})
-    print("wikipedia lookups:", len(allnames))
-    with ThreadPoolExecutor(3) as ex:
-        list(ex.map(draw_of, allnames))
     out = {}
     for y, (acts, cur) in res.items():
         rows = []
         for a in acts:
-            n, w = a["n"], draw_of(a["n"])
+            n = a["n"]
             is_cur = key(n) in cur or any(c in key(n) for c in cur)
-            rows.append({"n": n, "v": w["views"], "w": w["title"], "b": 100 if is_cur else {"bold1": 100, "bold": 80, "list": 60}.get(a["flag"], 45),
+            rows.append({"n": n, "b": 100 if is_cur else {"bold1": 100, "bold": 80, "list": 60}.get(a["flag"], 45),
                          "e": ensemble_score(n), "c": 100 if is_cur else commission_score(n)})
             if "s" in a:
                 rows[-1]["s"], rows[-1]["d"], rows[-1]["p"] = a["s"], a["d"], a["p"]
-        rows.sort(key=lambda r: -r["v"])
+        rows.sort(key=lambda r: (-r.get("s", 0), r["n"]))
         out[y] = rows
-        print(y, len(rows), "with wikipedia page:", sum(1 for r in rows if r["w"]))
+        print(y, len(rows))
     with open(os.path.join(ROOT, "lineups.js"), "w", encoding="utf8") as f:
         f.write("/* GENERATED by tools/build_lineups.py - do not edit by hand.\n"
-                " * n = act, v = Wikipedia page views (60 days, as of generation), w = matched Wikipedia page,\n"
-                " * b = billing 0-100, e = ensemble 0-100, c = special commission 0-100,\n"
+                " * n = act, b = billing 0-100, e = ensemble 0-100, c = special commission 0-100,\n"
                 " * s = best room (clashfinder timetable) 0-100, d = longest slot in minutes, p = prime-time score 0-100 (all absent when no timetable exists) */\n")
         f.write("const LINEUPS = " + json.dumps(out, ensure_ascii=False, separators=(",", ":")) + ";\n")
 

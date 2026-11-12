@@ -16,7 +16,7 @@ h1 span{color:var(--pink)}
 .kpi b{font-size:1.6rem;display:block}
 .kpi i{font-style:normal;font-size:.85rem}
 .up{color:var(--green)}.down{color:var(--red)}.flat{color:var(--mute)}
-.nav{position:sticky;top:0;z-index:5;background:rgba(15,11,26,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);display:flex;gap:6px;overflow-x:auto;padding:10px 20px;justify-content:center;scrollbar-width:none}
+.nav{position:sticky;top:0;z-index:5;background:rgba(15,11,26,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);display:flex;gap:6px;overflow-x:auto;padding:10px 20px;scrollbar-width:none}.nav a:first-child{margin-left:auto}.nav a:last-child{margin-right:auto}
 .nav::-webkit-scrollbar{display:none}
 .nav a{color:var(--mute);text-decoration:none;padding:7px 16px;border-radius:99px;white-space:nowrap;font-size:.9rem;font-weight:600;border:1px solid transparent;transition:.15s}
 .nav a:hover{color:var(--text);border-color:var(--line);background:var(--card)}
@@ -27,7 +27,7 @@ h1 span{color:var(--pink)}
 .intro-facts div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
 .intro-facts b{display:block;font-size:1.7rem;color:var(--pink)}
 .intro-facts span{color:var(--mute);font-size:.82rem}
-@media(max-width:760px){.intro{grid-template-columns:1fr}.nav{justify-content:flex-start}}
+@media(max-width:760px){.intro{grid-template-columns:1fr}}
 section{scroll-margin-top:60px}
 section{padding:44px 0 8px}
 h2{font-size:1.9rem;margin:0 0 6px}

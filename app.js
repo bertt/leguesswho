@@ -129,7 +129,7 @@ el("kpis").innerHTML = [
 ].join("");
 
 /* ---------- nav & glossary ---------- */
-el("nav").innerHTML = [...document.querySelectorAll("main section")].map(s => `<a href="#${s.id}">${s.querySelector("h2").textContent.split(/[,&?]/)[0]}</a>`).join("");
+el("nav").innerHTML = [...document.querySelectorAll("#about, main section")].map(s => `<a href="#${s.id}">${s.id === "about" ? "About" : s.querySelector("h2").textContent.split(/[,&?]/)[0]}</a>`).join("");
 el("glossary").innerHTML = [
   ["Income", "All money coming in: tickets, subsidies from the city, province and funds, sponsors, bar sales."],
   ["Costs", "All money going out: fees for bands, venue hire, salaries, marketing."],
@@ -287,7 +287,8 @@ window.addEventListener("scroll", () => el("tip").hidden = true, { passive: true
   const spy = () => {
     let cur = 0; secs.forEach((s, i) => { if (s.getBoundingClientRect().top < 120) cur = i; });
     links.forEach((a, i) => a.classList.toggle("active", i === cur));
-    const a = links[cur]; if (a.classList.contains("active")) { const n = el("nav"); n.scrollLeft = a.offsetLeft - n.clientWidth / 2 + a.offsetWidth / 2; }
+    const a = links[cur], n = el("nav");
+    if (a.offsetLeft < n.scrollLeft || a.offsetLeft + a.offsetWidth > n.scrollLeft + n.clientWidth) n.scrollLeft = a.offsetLeft - n.clientWidth / 2 + a.offsetWidth / 2;
   };
   addEventListener("scroll", spy, { passive: true }); spy();
 })();

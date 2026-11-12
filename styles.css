@@ -102,3 +102,4 @@ dialog.modal{max-width:min(860px,94vw);max-height:90vh;overflow:auto;background:
 
 /* many tabs: compact and wrap on wide screens, scroll on narrow ones */
 @media(min-width:900px){.nav{flex-wrap:wrap;justify-content:center;overflow:visible;gap:4px;padding:8px 20px}.nav a,.nav a:first-child,.nav a:last-child{margin:0;padding:5px 12px;font-size:.82rem}}
+table.fees tr.cur td{background:#fff1c9}.curkey{background:#fff1c9;padding:0 .35em;border-radius:3px}

@@ -111,7 +111,7 @@ const comparablePrev = (y, p, key) => (y.restated2024 && p && p.year === y.year 
 el("lead").innerHTML = `${esc(SITE.foundation)} runs the Utrecht festival <b>Le Guess Who?</b>. This page turns its published annual accounts (${esc(SITE.generated.replace("Based on the annual reports published for ", ""))}) into pictures anyone can follow – no accounting degree needed. In <b>${last.year}</b> the foundation had <b>${eurShort(totalRev(last))}</b> income and a result of <b>${eurShort(last.result)}</b>.`;
 
 function kpi(label, value, delta, goodUp, abs) {
-  const cls = delta == null || Math.abs(delta) < 0.5 ? "flat" : ((delta > 0) === goodUp ? "up" : "down");
+  const cls = delta == null || Math.abs(delta) < 0.5 ? "flat" : delta > 0 ? "up" : "down";
   const arrow = delta == null ? "" : delta > 0 ? "▲" : "▼";
   const d = delta == null ? "" : `<i class="${cls}">${arrow} ${abs ? eurShort(Math.abs(delta)) : Math.abs(delta).toFixed(0) + "%"} vs ${prev.year}</i>`;
   return `<div class="kpi"><small>${label}</small><b>${value}</b>${d}</div>`;

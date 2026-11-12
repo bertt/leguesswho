@@ -161,7 +161,7 @@ chart("c-visitors", {
   series: [{ name: "Festival (paying visitors)", color: COL.pink, data: Y.map(y => y.visitors && y.visitors.festival || 0) },
            { name: "COSMOS (online, free – not paying)", color: COL.teal, data: Y.map(y => y.visitors && y.visitors.cosmos || 0) },
            { name: "U? (city festival)", color: COL.yellow, data: Y.map(y => y.visitors && y.visitors.city || 0) },
-           { name: "Other", color: COL.violet, data: Y.map(y => y.visitors && y.visitors.other || 0) },
+           { name: "Other", color: COL.red, data: Y.map(y => y.visitors && y.visitors.other || 0) },
            { name: "U? + COSMOS (not split in report)", color: COL.blue, data: Y.map(y => y.visitors && y.visitors.combined || 0) }],
   extra: Y.map(y => y.visitors && y.visitors.note || ""),
   footnote: "Only the blue “Festival” bars are paying visitors. COSMOS (online) and U? (city programme) are free to access: they count people reached, not ticket buyers or income. 2020 = online stream only (festival cancelled). Some years are rounded (“about 20,000”) in the report.",

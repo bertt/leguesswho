@@ -296,7 +296,7 @@ el("timeline").innerHTML = EARLY_YEARS.items.map(i => `<div class="tl"><b>${i.ye
   const k = v => "€" + nf.format(Math.round(v / 100) / 10) + "k";
   const sel = el("fee-year");
   sel.innerHTML = feeYears.slice().reverse().map(y => `<option value="${y}">${y}${poolOf(y).estimate ? " (estimate)" : ""}</option>`).join("");
-  sel.value = Math.max(...feeYears.filter(y => !poolOf(y).estimate));
+  sel.value = Math.max(...feeYears);
   let showAll = false;
   const render = () => {
     const yr = +sel.value, p = poolOf(yr), rows = fees(yr), list = showAll ? rows : rows.slice(0, 25);

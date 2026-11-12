@@ -130,6 +130,7 @@ def blokken(year):
 
 CLASH_YEARS = (2017, 2021, 2022, 2023, 2024, 2025, 2026)  # clashfinder.com/s/lgw<yy> exists for these years
 DAYS = ["Thu", "Fri", "Sat", "Sun", "Mon", "Tue", "Wed"]
+PLAIN_CURATORS = {"Curator: clipping."}  # clipping. is a hip-hop trio doing a normal set, not a commissioned project
 # talks and panels that are on the line-up page but are not paid concerts
 PANELS = re.compile(r"^(Right Relations:|Artistic Freedom Under Threat:|Black Sonic Technologies:|Diasporic Soundscapes:|EPHEMERA:|Legacies of Resistance:|"
                     r"On Sound as Substance:|Palestinian Sound Archive:|Tech, Sound, Power:|The Art of Dissent:|The Politics of Culture:)", re.I)
@@ -243,8 +244,11 @@ def main():
         for a in acts:
             n = a["n"]
             is_cur = key(n) in cur or any(c in key(n) for c in cur)
+            plain = n in PLAIN_CURATORS  # curator who plays an ordinary band show: no special-commission credit
+            if plain:
+                n = n.replace("Curator: ", "")
             rows.append({"n": n, "b": 100 if is_cur else {"bold1": 100, "bold": 80, "list": 60}.get(a["flag"], 45),
-                         "e": ensemble_score(n), "c": 100 if is_cur else commission_score(n)})
+                         "e": ensemble_score(n), "c": 0 if plain else 100 if is_cur else commission_score(n)})
             if PANELS.search(n):
                 rows[-1]["k"] = 1
             if "s" in a:

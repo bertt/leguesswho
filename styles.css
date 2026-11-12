@@ -84,3 +84,9 @@ table.heat{border-collapse:collapse;font-size:.82rem;min-width:760px;width:100%}
 .sources{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
 .sources a{border:1px solid var(--line);padding:4px 12px;border-radius:99px;text-decoration:none;font-size:.9rem}
 footer{margin-top:50px;padding:28px 0;border-top:1px solid var(--line);color:var(--mute);font-size:.85rem}
+
+.yearpick{font-size:.9rem}.yearpick select{margin-left:6px;background:var(--card);color:inherit;border:1px solid var(--line,#444);border-radius:6px;padding:4px 8px}
+.more{margin-top:10px;background:none;color:inherit;border:1px solid var(--line,#444);border-radius:6px;padding:6px 12px;cursor:pointer}
+table.fees td:nth-child(2){text-align:left}table.fees th:nth-child(2){text-align:left}table.fees{min-width:620px}
+
+table.fees{min-width:900px}table.fees .fac{font-size:.8em;text-align:center;white-space:nowrap}table.fees .fac.na{color:#999}

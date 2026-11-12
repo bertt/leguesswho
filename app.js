@@ -273,6 +273,57 @@ el("timeline").innerHTML = EARLY_YEARS.items.map(i => `<div class="tl"><b>${i.ye
   el("anbi-cards").innerHTML = cards.map(([t, title, text]) => `<article class="insight"><span class="tag ${t}">${t === "good" ? "OK" : t === "warn" ? "Watch" : "Info"}</span><h3>${title}</h3><p>${text}</p></article>`).join("");
 })();
 
+/* ---------- estimated fee per act ---------- */
+{
+  const M = FEE_MODEL, feeYears = Object.keys(LINEUPS).map(Number).sort((a, b) => a - b);
+  const clamp = v => Math.max(0, Math.min(100, v));
+  const drawScore = v => clamp((Math.log10(v + 1) - Math.log10(M.drawViews[0])) / (Math.log10(M.drawViews[1]) - Math.log10(M.drawViews[0])) * 100);
+  const poolOf = yr => {
+    const rep = Y.find(y => y.year === yr), costs = rep ? rep.cost.artists : ESTIMATED_ARTIST_COSTS[yr];
+    return { costs, estimate: !rep, pool: costs == null ? null : costs * M.gageShare };
+  };
+  const fees = yr => {
+    const { pool } = poolOf(yr);
+    const rows = LINEUPS[yr].map(a => {
+      const f = { stage: a.s, position: a.p, draw: drawScore(a.v), duration: a.d == null ? null : clamp((a.d - 30) / 60 * 100), billing: a.b, ensemble: a.e, commission: a.c };
+      const keys = Object.keys(M.weights).filter(k => f[k] != null), ws = keys.reduce((s, k) => s + M.weights[k].w, 0);
+      const score = Math.max(M.minScore, keys.reduce((s, k) => s + M.weights[k].w * f[k], 0) / ws);
+      return { ...a, f, score };
+    });
+    const tot = rows.reduce((s, r) => s + r.score * r.score, 0);
+    rows.forEach(r => r.fee = pool * r.score * r.score / tot);
+    return rows.sort((a, b) => b.fee - a.fee);
+  };
+  const k = v => "€" + nf.format(Math.round(v / 100) / 10) + "k";
+  const sel = el("fee-year");
+  sel.innerHTML = feeYears.slice().reverse().map(y => `<option value="${y}">${y}${poolOf(y).estimate ? " (estimate)" : ""}</option>`).join("");
+  sel.value = Math.max(...feeYears.filter(y => !poolOf(y).estimate));
+  let showAll = false;
+  const render = () => {
+    const yr = +sel.value, p = poolOf(yr), rows = fees(yr), list = showAll ? rows : rows.slice(0, 25);
+    el("fee-summary").innerHTML = `<b>${yr}</b>: artist costs ${eur(p.costs)}${p.estimate ? " (<b>estimate</b>, no annual report yet)" : ""} × ${Math.round(M.gageShare * 100)}% pure fees = <b>${eur(p.pool)}</b> spread over ${rows.length} acts found (average ${k(p.pool / rows.length)}). If the real number of acts is higher than the ${rows.length} found, fees are overestimated.`;
+    const fk = Object.keys(M.weights);
+    el("fee-table").innerHTML = `<table class="heat fees"><thead><tr><th>#</th><th>Act</th><th>Score</th><th>Estimated fee</th><th>80% interval</th>${fk.map(key => `<th class="fac" title="${esc(M.weights[key].label)} – weight ${M.weights[key].w}%">${esc(M.weights[key].short)}<br><small>${M.weights[key].w}%</small></th>`).join("")}</tr></thead><tbody>${list.map((r, i) =>
+      `<tr><td>${i + 1}</td><td>${esc(r.n)}</td><td>${r.score.toFixed(0)}</td><td><b>${k(r.fee)}</b></td><td>${k(r.fee * M.interval[0])} – ${k(r.fee * M.interval[1])}</td>${fk.map(key => r.f[key] == null ? '<td class="fac na">–</td>' : `<td class="fac" style="background:rgba(60,120,200,${(r.f[key] / 100 * 0.35).toFixed(2)})">${Math.round(r.f[key])}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
+    el("fee-more").textContent = showAll ? "Show top 25 only" : `Show all ${rows.length} acts`;
+  };
+  sel.addEventListener("change", () => { showAll = false; render(); });
+  el("fee-more").addEventListener("click", () => { showAll = !showAll; render(); });
+  render();
+
+  const ranks = [[1, COL.pink], [3, COL.yellow], [5, COL.teal], [10, COL.blue]];
+  const perYear = feeYears.map(fees);
+  chart("c-feetop", {
+    labels: feeYears.map(y => poolOf(y).estimate ? y + "*" : String(y)), fmt: k, aria: "Estimated fee of the top acts per year",
+    series: ranks.map(([r, c]) => ({ name: r === 1 ? "#1 act" : "#" + r + " act", type: "line", color: c, data: perYear.map(rows => rows[r - 1] ? rows[r - 1].fee : null) }))
+      .concat([{ name: "Average act", type: "line", color: COL.red, dash: true, data: feeYears.map((y, i) => poolOf(y).pool / perYear[i].length) }]),
+    footnote: "Estimated fee of the #1, #3, #5 and #10 act per year, plus the average act. * = estimate (no annual report yet). Years differ in how complete the line-up data is, so small year-to-year moves are noise."
+  });
+
+  el("fee-weights").innerHTML = `<table class="heat"><thead><tr><th>Factor</th><th>Weight</th><th>How it is scored (0–100)</th></tr></thead><tbody>${Object.values(M.weights).map(f => `<tr><td>${esc(f.label)}</td><td>${f.w}%</td><td style="text-align:left">${esc(f.how)}</td></tr>`).join("")}</tbody></table>`;
+  el("fee-formula").innerHTML = `Score = weighted average of the factors (minimum ${M.minScore}). <b>Fee = pool × score² ÷ Σ score² of all acts that year</b>: the square makes fees skewed towards headliners. Pool = artist costs of the year × ${Math.round(M.gageShare * 100)}% (${Math.round(M.gageShareRange[0] * 100)}–${Math.round(M.gageShareRange[1] * 100)}%; the rest is travel, hotel, visas, backline). The 80% interval is the fee × ${M.interval[0]} to × ${M.interval[1]}. Page views are measured in 2026, not in the year of the festival. Acts and rooms come from the foundation's news posts, archive pages, blokkenschema.nl (2023–2025) and the clashfinder timetables (2017, 2021–2026); 2018 and 2019 have no timetable and are less complete. Nothing here is validated against real fees. 2026 uses an assumed artist budget of ${eur(ESTIMATED_ARTIST_COSTS[2026])}.`;
+}
+
 /* ---------- insights, trivia, sources ---------- */
 el("insight-cards").innerHTML = INSIGHTS.slice().sort((a, b) => a.year - b.year).map(i => `<article class="insight"><span class="yr">${i.year}</span> <span class="tag ${i.tag}">${esc(i.metric)}</span><span class="tag">${i.basis === "inference" ? "Our reading" : "From the report"}</span><h3>${esc(i.title)}</h3><p>${esc(i.text)}</p></article>`).join("");
 el("trivia-cards").innerHTML = TRIVIA.map(t => `<div class="fun"><span class="icon">${t.icon}</span><b>${esc(String(t.value(Y)))}</b><strong>${esc(t.label)}</strong><p>${esc(t.text)}</p></div>`).join("");

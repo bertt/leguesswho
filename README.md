@@ -55,6 +55,44 @@ The report normally appears on <https://leguesswho.com/anbi> in the course of 20
 
 Tip: the PDFs may be scanned or have no text layer (2018 and 2025 were like that). Read the numbers visually from the statements in that case, and double-check the totals.
 
+## Estimated fee per act (model, not published data)
+
+The "Estimated fee per act" section lets you pick a year, shows the performing acts ranked by estimated fee, and charts the fee of the top acts over time. The method (weights, formula, 80% interval) is described on the page and lives in `FEE_MODEL` in `data.js`. Per-act inputs are in the generated `lineups.js`.
+
+**How the model works** (all of it is an assumption-based estimate; nothing is validated against real fees):
+
+1. **Pool per year** = `cost.artists` from the annual report × `gageShare` (70%, range 59–80%). The 70% is my assumption, not a published number: artist costs also contain travel, hotel, visas and backline. All fees scale linearly with it.
+2. **Score per act (0–100)** = weighted average of the factors below. Factors that are unavailable (room, prime time and slot length for 2018 and 2019) are left out and the remaining weights are renormalised. Minimum score 5.
+3. **Fee** = pool × score² ÷ Σ score² of all acts of that year. The square skews the pool towards high-scoring acts.
+4. **80% interval** = fee × 0.55 to fee × 1.8 (uncertainty of the pool share and of the scores).
+
+| Factor | Weight | Scoring |
+|---|---|---|
+| Room | 30% | Largest room on the clashfinder timetable: Grote Zaal 100, Ronda 85, Pandora 65, Stadsschouwburg Main Room 60, Cloud Nine / churches 50, Hertz 45, other 25–40 |
+| Prime time | 15% | Set starts 20:00–23:00 in a room of Hertz size or bigger = 100, 19:00–20:00 or 23:00–24:00 = 50, otherwise 20 |
+| Draw | 20% | Wikipedia page views (60 days, log scale: 30 = 0, 50,000+ = 100). No page = 0 (about 25–30% of acts have one) |
+| Slot length | 10% | Longest set: 30 min = 0, 90+ min = 100 |
+| Billing | 15% | Curator or first announcement = 100, later announcement = 80, additions list = 60, only line-up page = 45 |
+| Ensemble | 5% | Orchestra / band / collective = 100, collaboration = 65, solo or DJ = 15, otherwise 45 |
+| Special commission | 5% | Curator = 100, "presents / premiere / collab" = 50, otherwise 0 |
+
+The weights and their texts live in `FEE_MODEL` in `data.js`; the per-act inputs (`v`, `b`, `e`, `c`, `s`, `d`, `p`) in the generated `lineups.js`.
+
+Known limitations: the pool is divided over the acts *found*, so incomplete years overestimate fees (2018 and 2019 have no timetable and are least complete); Wikipedia views are from the time of generation, not the festival year; acts without a Wikipedia page get draw 0; known cancellations are listed in `CANCELLED` in `tools/build_lineups.py` and may be incomplete; `WIKI_TITLE` there fixes acts whose Wikipedia page the automatic search misses.
+
+**Regenerate the acts** (public sources: news posts and archive on leguesswho.com, blokkenschema.nl for 2023–2025, clashfinder.com timetables for room, start time and slot length (2017, 2021–2026), Wikipedia page views as name-recognition proxy):
+
+```
+uv run --with requests python tools/build_lineups.py
+```
+
+Add new posts for a new year to `POSTS` in `tools/build_lineups.py` first. Old years are incomplete, because the official archive pages only show part of the acts; check the printed act counts.
+
+**2026 is an estimate.** `ESTIMATED_ARTIST_COSTS = { 2026: 600000 }` in `data.js` is an assumed artist-cost total (similar to 2025). When the 2026 report is published and added to `YEARS` (see above), the real `cost.artists` is used automatically and the "estimate" label disappears; you can then delete the 2026 line from `ESTIMATED_ARTIST_COSTS`. Also check:
+
+1. `FEE_MODEL.gageShare`: the share of artist costs that is pure fee (rest = travel, hotel, visas, backline). If the report changes the cost grouping again (as in 2025), adjust it.
+2. Re-run the builder after the 2026 line-up is final, so the act list is complete.
+
 ## Run locally
 
 No build step. Open `index.html`, or serve the folder:

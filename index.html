@@ -90,6 +90,19 @@
     </div>
   </section>
 
+  <section id="feemodel">
+    <h2>Estimated fee per act</h2>
+    <p class="sub">Per-band fees are never published. This is a <b>model</b>, not a fact: the artist budget of the chosen year is spread over the performing acts using a score per act.</p>
+    <div class="card">
+      <label class="yearpick">Year <select id="fee-year"></select></label>
+      <p class="note" id="fee-summary"></p>
+      <div class="scroll"><div id="fee-table"></div></div>
+      <button id="fee-more" class="more" type="button"></button>
+    </div>
+    <div class="card"><h3>Fee of the top acts over time</h3><div class="chart" id="c-feetop"></div></div>
+    <div class="card"><h3>How the fee is calculated</h3><div id="fee-weights"></div><p class="note" id="fee-formula"></p></div>
+  </section>
+
   <section id="directors">
     <h2>The directors</h2>
     <p class="sub">Pay of the statutory directors as published in the annual accounts (WNT section: salary, expenses and pension build-up), plus who they are.</p>
@@ -151,6 +164,7 @@
 
 <div class="tip" id="tip" hidden></div>
 <script src="data.js"></script>
+<script src="lineups.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

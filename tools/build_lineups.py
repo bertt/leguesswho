@@ -45,8 +45,6 @@ CANCELLED = {
 }
 NOT_PERFORMING = {2026: ["Ciro Monoarfa Goudsmit", "Uta"]}  # Sound & Culture Summit session participants
 RENAME = {2026: {"Mai Mai Mai & Osama Abu Ali": "Mai Mai Mai & Tareq Abboushi"}}
-# 2026: only acts on the official leguesswho.com/lineup (or timetable) are kept; these are spelled differently there
-OFFICIAL_ALIASES_2026 = ["ROÍS", "Robert Nikolajev", "Ibrahim Owais", "Sima nos é só nós", "NAKID", "OCCII"]
 ITEM = r'<div data-order="[^"]*" class="item"[^>]*?data-project="([^"]*)"[^>]*>.*?<h3 class="h6"><a[^>]*>([^<]*)</a>'
 
 
@@ -259,12 +257,11 @@ def main():
                 if k not in used and not SKIP_LINES.match(v["n"]):
                     acts.append({"n": v["n"], "flag": "other", "s": v["s"], "d": v["d"], "p": v["p"], "o": v["o"], "r": v["r"], "t": v["t"], "x": v["x"], "w": [t for _, t in sorted(v["w"])]})
             print("  clashfinder:", len(cl), "acts, added", len(cl) - len(used))
-        if y == 2026:
-            official = {key(n) for n in extra} | {key(n) for n in OFFICIAL_ALIASES_2026}
+        if y in OFFICIAL_TIMETABLE:
             for a in acts:
-                if key(a["n"]) not in official:
-                    print("  not on official lineup, dropped:", a["n"])
-            acts = [a for a in acts if key(a["n"]) in official]
+                if "r" not in a:
+                    print("  no slot in official timetable, dropped:", a["n"])
+            acts = [a for a in acts if "r" in a]
         res[y] = (acts, {key(c) for c in curators if len(key(c)) > 3})
         print("  acts", len(acts), "curators", len(res[y][1]))
     out = {}

@@ -218,7 +218,7 @@ const PEOPLE = [
     ],
   },
   {
-    id: "bvh", name: "Bob van Heur", role: "Co-founder · artistic director-board member", color: "#ff4d8d",
+    id: "bvh", name: "Bob van Heur", role: "Co-founder · artistic director-board member", color: "#5b9dff",
     from: 2007, to: null, tenure: "since the start (2007), board member",
     bio: "Co-founder and the artistic mind behind the programme. Since 1 January 2023 sole artistic director-bestuurder next to the business director. Side activities listed by the foundation: founder/owner of Distorted Channel and founder/programmer of 24-Hour Drone (Hudson, New York).",
     pay: { 2017: { pay: 64344, fte: 0.84, cap: 152421 }, 2018: { pay: 59690, fte: 0.8 }, 2019: { pay: 66000, fte: 0.8, cap: 155200 }, 2020: { pay: 78691, fte: 1, cap: 201000 },

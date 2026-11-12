@@ -1,6 +1,6 @@
 /* Le Guess Who? finances – rendering. All numbers live in data.js. */
 const Y = YEARS.slice().sort((a, b) => a.year - b.year);
-const COL = { pink: "#ff4d8d", yellow: "#ffd23f", teal: "#3ddbd9", violet: "#8b6bff", green: "#4ade80", red: "#ff6b6b", orange: "#ff9f43", blue: "#4d8dff", grey: "#8c85a8" };
+const COL = { pink: "#5b9dff", yellow: "#ffd23f", teal: "#3ddbd9", violet: "#8b6bff", green: "#4ade80", red: "#ff6b6b", orange: "#ff9f43", blue: "#a3e635", grey: "#8c85a8" };
 const PAL = [COL.pink, COL.yellow, COL.teal, COL.violet, COL.orange, COL.blue, COL.green, COL.grey];
 
 /* ---------- helpers (also used by data.js) ---------- */
@@ -40,7 +40,7 @@ function niceTicks(min, max, n) {
   if (min === max) { max = min + 1; }
   const raw = (max - min) / n, p = Math.pow(10, Math.floor(Math.log10(raw)));
   const step = [1, 2, 2.5, 5, 10].map(m => m * p).find(s => s >= raw);
-  const t = []; for (let v = Math.floor(min / step) * step; v <= max + step * 0.001; v += step) t.push(v);
+  const t = []; for (let v = Math.floor(min / step) * step; ; v += step) { t.push(v); if (v >= max - step * 0.001) break; }
   return t;
 }
 

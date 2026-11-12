@@ -130,8 +130,8 @@ def blokken(year):
 
 CLASH_YEARS = (2017, 2021, 2022, 2023, 2024, 2025, 2026)  # clashfinder.com/s/lgw<yy> exists for these years
 # approximate room size -> 0-100 (the timetable position is the strongest public headliner signal)
-STAGES = [(r"grote zaal\b", 100), (r"ronda", 85), (r"stadsschouwburg.*main", 60), (r"pandora(?!.*(foyer|studio))|^tv pandora", 65),
-          (r"cloud nine", 50), (r"hertz", 45), (r"domkerk|jacobikerk|janskerk|pieterskerk", 50), (r"theater utrecht (theater|koepel)", 40),
+STAGES = [(r"grote zaal\b", 92), (r"ronda", 100), (r"stadsschouwburg.*main", 55), (r"pandora(?!.*(foyer|studio))|^tv pandora", 60),
+          (r"cloud nine", 45), (r"hertz", 55), (r"domkerk|jacobikerk|janskerk|pieterskerk", 50), (r"theater utrecht (theater|koepel)", 40),
           (r"kapitaal|blauwe zaal", 40), (r"foyer|studio", 35)]
 
 
@@ -161,7 +161,7 @@ def clash(year):
         # prime time (start 20:00-23:00) = 100, the hour either side = 50, otherwise 20; only counted in rooms of Hertz size and up
         pos = (100 if 20 <= hod < 23 else 50 if 19 <= hod < 20 or 23 <= hod < 24 else 20) if big else 20
         # festival opener (Thursday 18:00-20:30) or closer (last day 19:00-21:00) in a main room (Grote Zaal / Ronda)
-        oc = 100 if sc >= 85 and ((day == 0 and 18 <= h < 20.5) or (day == last and last > 0 and 19 <= h - 24 * last < 21)) else 0
+        oc = 100 if sc >= 90 and ((day == 0 and 18 <= h < 20.5) or (day == last and last > 0 and 19 <= h - 24 * last < 21)) else 0
         o = out.setdefault(key(nm), {"n": nm, "s": 0, "d": 0, "p": 0, "o": 0})
         o["s"], o["d"], o["p"], o["o"] = max(o["s"], sc), max(o["d"], round(dur)), max(o["p"], pos), max(o["o"], oc)
     return out

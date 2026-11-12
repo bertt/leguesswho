@@ -284,7 +284,7 @@ el("timeline").innerHTML = EARLY_YEARS.items.map(i => `<div class="tl"><b>${i.ye
   const fees = yr => {
     const { pool } = poolOf(yr);
     const rows = LINEUPS[yr].map(a => {
-      const f = { stage: a.s, position: a.p, opening: a.o, duration: a.d == null ? null : clamp((a.d - 30) / 90 * 100), billing: a.b, ensemble: a.e, commission: a.c };
+      const f = { stage: a.s, position: a.p, opening: a.o, duration: a.d == null ? null : clamp((a.d - 30) / 90 * 100), billing: a.b, ensemble: a.e, commission: a.c, legend: LEGENDS[a.n] || 0 };
       const keys = Object.keys(M.weights).filter(k => f[k] != null), ws = keys.reduce((s, k) => s + M.weights[k].w, 0);
       const score = a.k ? M.panelScore : Math.max(M.minScore, keys.reduce((s, k) => s + M.weights[k].w * f[k], 0) / ws);
       return { ...a, f, score };

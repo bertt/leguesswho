@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le Guess Who? – the finances in plain English</title>
+<meta name="description" content="An easy-to-read visual overview of the annual accounts of Stichting Le Guess Who: income, costs, visitors, salaries, directors and more.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Unofficial overview · built from the published annual accounts</p>
+    <h1>Le Guess <span>Who?</span><br>the money, explained</h1>
+    <p class="lead" id="lead"></p>
+    <p class="srcline">Source data: <a href="https://leguesswho.com/anbi">official ANBI page with the annual reports (PDF)</a> · <a href="data.js">all numbers used here (data.js)</a> · <a href="#sources">all report links</a></p>
+    <div class="kpis" id="kpis"></div>
+  </div>
+</header>
+
+<section class="intro wrap" id="about">
+  <div class="intro-text">
+    <h2>What is Le Guess Who?</h2>
+    <p><b>Le Guess Who?</b> is an international music festival in <b>Utrecht, the Netherlands</b>, held every November since 2007 (founded by Johan Gijsen and Bob van Heur). Over four days, about 150–180 artists play in venues all over the city centre, from concert halls to churches and clubs. The programme is adventurous and global: indie, folk, experimental, jazz, and music from cultures that rarely reach big stages. Each edition also has guest curators who pick their own favourite artists.</p>
+    <p>The festival is run by the non-profit <b>Stichting Le Guess Who</b>, which has ANBI status (a tax-recognised public benefit organisation) and therefore publishes its annual accounts. This page makes those accounts easy to read.</p>
+  </div>
+  <div class="intro-facts">
+    <div><b>2007</b><span>first edition</span></div>
+    <div><b>~19k</b><span>festival visitors</span></div>
+    <div><b>150+</b><span>artists per year</span></div>
+    <div><b>50+</b><span>countries reached</span></div>
+  </div>
+</section>
+
+<nav class="nav" id="nav"></nav>
+
+<main class="wrap">
+  <section id="basics">
+    <h2>Five words you need</h2>
+    <div class="glossary" id="glossary"></div>
+  </section>
+
+  <section id="money">
+    <h2>Income, costs and the result</h2>
+    <p class="sub">Each bar is one year. If income (pink) is higher than costs (yellow) the festival made a surplus; otherwise a deficit.</p>
+    <div class="card"><div class="chart" id="c-incomecost"></div></div>
+    <div class="grid2">
+      <div class="card"><h3>Profit / loss per year</h3><div class="chart" id="c-result"></div></div>
+      <div class="card"><h3>Money in the bank</h3><div class="chart" id="c-bal"></div></div>
+    </div>
+  </section>
+
+  <section id="visitors">
+    <h2>Visitors</h2>
+    <p class="sub">The physical festival is limited by the number of venues, so growth happens online (COSMOS) and in the city (U?).</p>
+    <div class="card"><div class="chart" id="c-visitors"></div></div>
+    <div class="grid2">
+      <div class="card"><h3>Ticket income per festival visitor</h3><div class="chart" id="c-ppv"></div></div>
+      <div class="card"><h3>Passes vs. day tickets</h3><div id="tickets"></div></div>
+    </div>
+  </section>
+
+  <section id="where">
+    <h2>Where does the money come from, and where does it go?</h2>
+    <div class="grid2">
+      <div class="card"><h3>Income by source</h3><div class="chart" id="c-revmix"></div></div>
+      <div class="card"><h3>Costs by type</h3><div class="chart" id="c-costmix"></div></div>
+    </div>
+  </section>
+
+  <section id="people">
+    <h2>Bands and salaries</h2>
+    <div class="grid2">
+      <div class="card"><h3>Artist fees</h3><div class="chart" id="c-artists"></div><p class="note" id="artist-note"></p></div>
+      <div class="card"><h3>Salary costs &amp; staff</h3><div class="chart" id="c-salary"></div></div>
+    </div>
+  </section>
+
+  <section id="directors">
+    <h2>The directors</h2>
+    <p class="sub">Pay of the statutory directors as published in the annual accounts (WNT section: salary, expenses and pension build-up), plus who they are.</p>
+    <div class="card"><div class="chart" id="c-directors"></div></div>
+    <div class="people" id="people-cards"></div>
+    <p class="note" id="supervisory"></p>
+  </section>
+
+  <section id="anbi">
+    <h2>ANBI status</h2>
+    <p class="sub">ANBI = Dutch “public benefit organisation” status that gives tax advantages. Quick check of the published numbers against the main financial conditions. Indicative only – not tax advice.</p>
+    <div class="insights" id="anbi-cards"></div>
+  </section>
+
+  <section id="changes">
+    <h2>What changed the most?</h2>
+    <p class="sub">Year-over-year change per line. <b class="hot">Orange</b> = more than +25%, <b class="cold">blue</b> = more than −25%.</p>
+    <div class="card scroll"><div id="heatmap"></div></div>
+  </section>
+
+  <section id="insights">
+    <h2>Odd things &amp; possible explanations</h2>
+    <p class="sub">“From the report” means the explanation is stated in the annual report. “Our reading” is an educated guess.</p>
+    <div class="insights" id="insight-cards"></div>
+  </section>
+
+  <section id="trivia">
+    <h2>Trivia</h2>
+    <div class="trivia" id="trivia-cards"></div>
+  </section>
+
+  <section id="sources">
+    <h2>Sources &amp; caveats</h2>
+    <ul class="caveats" id="caveats"></ul>
+    <div class="sources" id="source-links"></div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">Unofficial. Not affiliated with Le Guess Who?. Numbers are taken from the foundation's published ANBI documents (<a href="https://leguesswho.com/anbi">leguesswho.com/anbi</a>) and may contain transcription errors – always check the originals.</div>
+</footer>
+
+<div class="tip" id="tip" hidden></div>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -172,7 +172,7 @@ const INSIGHTS = [
     basis: "inference" },
   { year: 2025, tag: "info", metric: "Visitors flat, COSMOS +15%",
     title: "The festival is maxed out; growth is online",
-    text: "Paying festival visitors have hovered around 19–20k since 2019: the venues are full and the report says there is no room (and no wish) to grow. All growth in the headline total comes from the free/online side: COSMOS reach went from 16.5k (2022) to 37.4k (2025). Note that COSMOS counts online and hybrid reach, which is not the same as a person buying a ticket.",
+    text: "Paying festival visitors have hovered around 19–20k since 2019: the venues are full and the report says there is no room (and no wish) to grow. All growth in the headline total comes from online, non-paying people: COSMOS reach went from 16.5k people (2022) to 37.4k people (2025). These are free online listeners and viewers (mixtapes, films, live radio, talks), not customers: the reports show no COSMOS ticket, subscription or other income. It is audience reach, not money.",
     basis: "report" },
 ];
 

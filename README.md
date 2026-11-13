@@ -102,7 +102,7 @@ The weights and their texts live in `FEE_MODEL` in `data.js`; the per-act inputs
 
 Known limitations: the pool is divided over the acts *found*, so incomplete years overestimate fees (2018 and 2019 are the least complete years; 2019 uses the official timetable booklet parsed by `tools/parse_timetable_2019.py`, 2018 the clashfinder `lgw2018`); known cancellations are listed in `CANCELLED` in `tools/build_lineups.py` and may be incomplete.
 
-**Regenerate the acts** (public sources: news posts and archive on leguesswho.com, blokkenschema.nl for 2023–2025, clashfinder.com timetables for room, start time and slot length (2014–2018, 2021–2025; 2013 from `pdf/timetable_def.pdf` read off the chart by hand into `tools/timetable_2013.json` (times about ±10 min); 2019 from the official booklet `pdf/lgw19-timetable-booklet.pdf` via `uv run --with pymupdf python tools/parse_timetable_2019.py`; 2026 official)):
+**Regenerate the acts** (public sources: news posts and archive on leguesswho.com, blokkenschema.nl for 2023–2025, clashfinder.com timetables for room, start time and slot length (2014–2018, 2021–2025; 2013 from `pdf/timetable_def.pdf` (https://web.archive.org/web/20131125090056/http://www.leguesswho.nl/data/timetable_def.pdf) read off the chart by hand into `tools/timetable_2013.json` (times about ±10 min); 2019 from the official booklet `pdf/lgw19-timetable-booklet.pdf` via `uv run --with pymupdf python tools/parse_timetable_2019.py`; 2026 official)):
 
 ```
 uv run --with requests python tools/build_lineups.py

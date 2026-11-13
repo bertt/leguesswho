@@ -19,7 +19,7 @@ S = requests.Session()
 S.headers["User-Agent"] = "leguesswho-fee-model/1.0 (https://github.com/bertt/leguesswho)"
 
 POSTS = {
-    2013: [],  # no announcement posts: acts come from the official timetable only (tools/timetable_2013.json, read off the chart in pdf/timetable_def.pdf)
+    2013: [],  # no announcement posts: acts come from the official timetable only (tools/timetable_2013.json, read off the chart in pdf/timetable_def.pdf = https://web.archive.org/web/20131125090056/http://www.leguesswho.nl/data/timetable_def.pdf)
     2014: [],  # no announcement posts: acts come from the clashfinder timetable only
     2015: [],  # no announcement posts: acts come from the clashfinder timetable only
     2016: [],  # no structured announcement posts on leguesswho.com: acts come from the clashfinder timetable only

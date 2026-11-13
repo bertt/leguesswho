@@ -74,7 +74,7 @@ Tip: the PDFs may be scanned or have no text layer (2018 and 2025 were like that
 
 ## Artists with multiple shows
 
-The "Artists with multiple shows" section lists, per year, the acts that play more than once, with day, time and room of each show. It is generated from the clashfinder timetables (2017, 2021–2026) into `lineups.js` (`x` = number of shows, `w` = day, time and room list, only present when `x` > 1) by `tools/build_lineups.py`. Placeholders (`TBC`) and exhibitions are excluded.
+The "Artists with multiple shows" section lists, per year, the acts that play more than once, with day, time and room of each show. It is generated from the timetables (clashfinder 2017, 2018, 2021–2025; official timetables 2019 and 2026) into `lineups.js` (`x` = number of shows, `w` = day, time and room list, only present when `x` > 1) by `tools/build_lineups.py`. Placeholders (`TBC`) and exhibitions are excluded.
 
 ## Estimated fee per act (model, not published data)
 
@@ -83,7 +83,7 @@ The "Estimated fee per act" section lets you pick a year, shows the performing a
 **How the model works** (all of it is an assumption-based estimate; nothing is validated against real fees):
 
 1. **Pool per year** = `cost.artists` from the annual report × `gageShare` (70%, range 59–80%). The 70% is my assumption, not a published number: artist costs also contain travel, hotel, visas and backline. All fees scale linearly with it.
-2. **Score per act (0–100)** = weighted average of the factors below. Factors that are unavailable (room, prime time and slot length for 2018 and 2019) are left out and the remaining weights are renormalised. Minimum score 5. Panels and talks (flagged in the table) get a fixed score of 1, so they receive almost no fee.
+2. **Score per act (0–100)** = weighted average of the factors below. Factors that are unavailable (e.g. room for an act without a timetable slot) are left out and the remaining weights are renormalised. Minimum score 5. Panels and talks (flagged in the table) get a fixed score of 1, so they receive almost no fee.
 3. **Fee** = pool × score² × show weight ÷ Σ (score² × show weight) of all acts of that year. The square skews the pool towards high-scoring acts. Show weight = 1 + `repeatFactor` × (shows − 1), with `repeatFactor` 0.2 in `data.js`: an act with two shows (clashfinder timetable, `x` in `lineups.js`) gets about 1.2× the fee of an act with one show, three shows 1.4×.
 4. **80% interval** = fee × 0.55 to fee × 1.8 (uncertainty of the pool share and of the scores).
 
@@ -100,9 +100,9 @@ The "Estimated fee per act" section lets you pick a year, shows the performing a
 
 The weights and their texts live in `FEE_MODEL` in `data.js`; the per-act inputs (`b`, `e`, `c`, `s`, `d`, `p`) in the generated `lineups.js`. There is deliberately no live streaming-popularity factor for the fee itself; the legend factor uses a one-off sample of Spotify play counts instead, generated into `legends.js` by `tools/build_legends.py` (`uv run python tools/build_legends.py`; needs the Spotify desktop app running, resumable).
 
-Known limitations: the pool is divided over the acts *found*, so incomplete years overestimate fees (2018 and 2019 have no timetable, so only billing, ensemble and commission count there, and they are least complete); known cancellations are listed in `CANCELLED` in `tools/build_lineups.py` and may be incomplete.
+Known limitations: the pool is divided over the acts *found*, so incomplete years overestimate fees (2018 and 2019 are the least complete years; 2019 uses the official timetable booklet parsed by `tools/parse_timetable_2019.py`, 2018 the clashfinder `lgw2018`); known cancellations are listed in `CANCELLED` in `tools/build_lineups.py` and may be incomplete.
 
-**Regenerate the acts** (public sources: news posts and archive on leguesswho.com, blokkenschema.nl for 2023–2025, clashfinder.com timetables for room, start time and slot length (2017, 2021–2026)):
+**Regenerate the acts** (public sources: news posts and archive on leguesswho.com, blokkenschema.nl for 2023–2025, clashfinder.com timetables for room, start time and slot length (2017, 2018, 2021–2025; 2019 from the official booklet `pdf/lgw19-timetable-booklet.pdf` via `uv run --with pymupdf python tools/parse_timetable_2019.py`; 2026 official)):
 
 ```
 uv run --with requests python tools/build_lineups.py

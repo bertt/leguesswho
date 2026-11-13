@@ -6,8 +6,8 @@ Sources (all public):
   - leguesswho.com news posts (initial line-up, additions, full program)  -> names + "billing"
   - leguesswho.com/archive/<year>/line-up and /lineup (2026)               -> names (partial for old years)
   - blokkenschema.nl/le-guess-who-<year>/line-up (2023-2025)               -> names
-  - clashfinder.com/s/lgw<yy> (2017, 2021-2025)                            -> room, start time and slot length per act (not 2018/2019)
-  - tools/timetable_2026.json (leguesswho.com/timetable via scrape_timetable.py) -> the same for 2026
+  - clashfinder.com/s/lgw<yy> (2017, 2021-2025), lgw2018 (2018)            -> room, start time and slot length per act
+  - tools/timetable_2019.json (official timetable booklet PDF via parse_timetable_2019.py) and tools/timetable_2026.json (leguesswho.com/timetable via scrape_timetable.py) -> the same for 2019 and 2026
 """
 import datetime, html, json, os, re, sys, unicodedata
 import requests
@@ -130,9 +130,10 @@ def blokken(year):
     return res
 
 
-CLASH_YEARS = (2017, 2021, 2022, 2023, 2024, 2025, 2026)  # clashfinder.com/s/lgw<yy> exists for these years
-OFFICIAL_TIMETABLE = (2026,)  # these years use tools/timetable_<year>.json (tools/scrape_timetable.py) instead of clashfinder
-DAY0 = {2026: "2026-11-05"}  # the Thursday of the festival
+CLASH_YEARS = (2017, 2018, 2019, 2021, 2022, 2023, 2024, 2025, 2026)  # clashfinder.com/s/<name> exists for these years
+CLASH_NAMES = {2018: "lgw2018"}  # default name is lgw<yy>
+OFFICIAL_TIMETABLE = (2019, 2026)  # these years use tools/timetable_<year>.json (tools/scrape_timetable.py, tools/parse_timetable_2019.py) instead of clashfinder
+DAY0 = {2019: "2019-11-07", 2026: "2026-11-05"}  # the Thursday of the festival
 DAYS = ["Thu", "Fri", "Sat", "Sun", "Mon", "Tue", "Wed"]
 PLAIN_CURATORS = {"Curator: clipping."}  # clipping. is a hip-hop trio doing a normal set, not a commissioned project
 # talks and panels that are on the line-up page but are not paid concerts
@@ -169,7 +170,8 @@ def clash(year):
     if year in OFFICIAL_TIMETABLE:
         items = [i for i in official_items(year) if i[1] <= 240 and key(i[2]) and not EXCLUDE.search(i[2])]
     else:
-        c = get(f"https://clashfinder.com/s/lgw{year % 100}/", f"clash_{year}")
+        n = CLASH_NAMES.get(year, f"lgw{year % 100}")
+        c = get(f"https://clashfinder.com/s/{n}/", f"clash_{year}")
         for part in c.split('<div class="stageContainer">')[1:]:
             m = re.search(r'class="stageName">(.*?)</p>', part)
             stage = html.unescape(m.group(1)) if m else ""

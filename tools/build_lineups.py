@@ -19,6 +19,7 @@ S = requests.Session()
 S.headers["User-Agent"] = "leguesswho-fee-model/1.0 (https://github.com/bertt/leguesswho)"
 
 POSTS = {
+    2015: [],  # no announcement posts: acts come from the clashfinder timetable only
     2016: [],  # no structured announcement posts on leguesswho.com: acts come from the clashfinder timetable only
     2017: ["revealing-the-first-curators-initial-line-up", "announcing-the-full-line-up-for-le-guess-who-2017"],
     2018: ["revealing-the-curators-initial-line-up-for-le-guess-who-2018", "revealing-new-projects-program-additions-for-le-guess-who-2018",
@@ -131,8 +132,8 @@ def blokken(year):
     return res
 
 
-CLASH_YEARS = (2016, 2017, 2018, 2019, 2021, 2022, 2023, 2024, 2025, 2026)  # clashfinder.com/s/<name> exists for these years
-CLASH_NAMES = {2016: "lgw2016", 2017: "lgw2017", 2018: "lgw2018"}  # default name is lgw<yy>
+CLASH_YEARS = (2015, 2016, 2017, 2018, 2019, 2021, 2022, 2023, 2024, 2025, 2026)  # clashfinder.com/s/<name> exists for these years
+CLASH_NAMES = {2015: "lgw2015", 2016: "lgw2016", 2017: "lgw2017", 2018: "lgw2018"}  # default name is lgw<yy>
 EXTRA_CURATORS = {2016: ["Wilco", "Savages", "Julia Holter", "Suuns"]}  # the four curators of the 10th edition (not in a parseable post)
 OFFICIAL_TIMETABLE = (2019, 2026)  # these years use tools/timetable_<year>.json (tools/scrape_timetable.py, tools/parse_timetable_2019.py) instead of clashfinder
 DAY0 = {2019: "2019-11-07", 2026: "2026-11-05"}  # the Thursday of the festival

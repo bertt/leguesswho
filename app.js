@@ -364,7 +364,7 @@ el("timeline").innerHTML = EARLY_YEARS.items.map(i => `<div class="tl"><b>${i.ye
     <li><b>Fee</b> = pool × score² ÷ Σ score² of all acts that year. The square favours headliners. An act that plays more than once counts extra: two shows get ${1 + M.repeatFactor}× the fee of one show, each further show adds ${M.repeatFactor}×.</li>
     <li><b>80% interval</b> = fee × ${M.interval[0]} to × ${M.interval[1]}.</li></ol>`;
   el("fee-weights").innerHTML = `<div class="facs">${Object.values(M.weights).map(f => `<div class="fac-row"><div class="fac-head"><b>${esc(f.label)}</b><span>${f.w}%</span></div><div class="fac-bar"><i style="width:${f.w * 100 / Math.max(...Object.values(M.weights).map(x => x.w))}%"></i></div><p>${esc(f.how)}</p></div>`).join("")}</div>`;
-  el("fee-formula").innerHTML = `Acts and rooms come from the foundation's news posts, archive pages, blokkenschema.nl (2023–2025) and the clashfinder timetables (2014–2018, 2021–2025) and the official timetables (2012 image, 2013 and 2019 booklets, 2026); the 2018 and 2019 line-ups are less complete. Nothing here is validated against real fees. 2026 uses an assumed artist budget of ${eur(ESTIMATED_ARTIST_COSTS[2026])}.`;
+  el("fee-formula").innerHTML = `Acts and rooms come from the foundation's news posts, archive pages, blokkenschema.nl (2023–2025) and the clashfinder timetables (2014–2018, 2021–2025) and the official timetables (2011 PDF, 2012 image, 2013 and 2019 booklets, 2026); the 2018 and 2019 line-ups are less complete. Nothing here is validated against real fees. 2026 uses an assumed artist budget of ${eur(ESTIMATED_ARTIST_COSTS[2026])}.`;
 }
 
 /* ---------- insights, trivia, sources ---------- */

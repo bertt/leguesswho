@@ -74,7 +74,7 @@ Tip: the PDFs may be scanned or have no text layer (2018 and 2025 were like that
 
 ## Artists with multiple shows
 
-The "Artists with multiple shows" section lists, per year, the acts that play more than once, with day, time and room of each show. It is generated from the timetables (clashfinder 2014–2018, 2021–2025; official timetables 2012, 2013, 2019 and 2026) into `lineups.js` (`x` = number of shows, `w` = day, time and room list, only present when `x` > 1) by `tools/build_lineups.py`. Placeholders (`TBC`) and exhibitions are excluded.
+The "Artists with multiple shows" section lists, per year, the acts that play more than once, with day, time and room of each show. It is generated from the timetables (clashfinder 2014–2018, 2021–2025; official timetables 2011, 2012, 2013, 2019 and 2026) into `lineups.js` (`x` = number of shows, `w` = day, time and room list, only present when `x` > 1) by `tools/build_lineups.py`. Placeholders (`TBC`) and exhibitions are excluded.
 
 ## Estimated fee per act (model, not published data)
 
@@ -102,7 +102,7 @@ The weights and their texts live in `FEE_MODEL` in `data.js`; the per-act inputs
 
 Known limitations: the pool is divided over the acts *found*, so incomplete years overestimate fees (2018 and 2019 are the least complete years; 2019 uses the official timetable booklet parsed by `tools/parse_timetable_2019.py`, 2018 the clashfinder `lgw2018`); known cancellations are listed in `CANCELLED` in `tools/build_lineups.py` and may be incomplete.
 
-**Regenerate the acts** (public sources: news posts and archive on leguesswho.com, blokkenschema.nl for 2023–2025, clashfinder.com timetables for room, start time and slot length (2014–2018, 2021–2025; 2012 from `pdf/timetable_2012.jpg` (https://web.archive.org/web/20121213124355/http://www.tivoli.nl/data/documenten/4.jpg) and 2013 from `pdf/timetable_def.pdf` (https://web.archive.org/web/20131125090056/http://www.leguesswho.nl/data/timetable_def.pdf), read off the chart by hand into `tools/timetable_2012.json` / `tools/timetable_2013.json` (times about ±10 min); 2019 from the official booklet `pdf/lgw19-timetable-booklet.pdf` via `uv run --with pymupdf python tools/parse_timetable_2019.py`; 2026 official)):
+**Regenerate the acts** (public sources: news posts and archive on leguesswho.com, blokkenschema.nl for 2023–2025, clashfinder.com timetables for room, start time and slot length (2014–2018, 2021–2025; 2011 from `pdf/timetable_2011.pdf` (https://web.archive.org/web/20111124231803/http://www.leguesswho.nl/festival/data/documenten/147.pdf) (band blocks read from the PDF's vector shapes into `tools/timetable_2011.json`), 2012 from `pdf/timetable_2012.jpg` (https://web.archive.org/web/20121213124355/http://www.tivoli.nl/data/documenten/4.jpg) and 2013 from `pdf/timetable_def.pdf` (https://web.archive.org/web/20131125090056/http://www.leguesswho.nl/data/timetable_def.pdf), read off the chart by hand into `tools/timetable_2012.json` / `tools/timetable_2013.json` (times about ±10 min); 2019 from the official booklet `pdf/lgw19-timetable-booklet.pdf` via `uv run --with pymupdf python tools/parse_timetable_2019.py`; 2026 official)):
 
 ```
 uv run --with requests python tools/build_lineups.py

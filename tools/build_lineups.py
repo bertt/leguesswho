@@ -19,6 +19,7 @@ S = requests.Session()
 S.headers["User-Agent"] = "leguesswho-fee-model/1.0 (https://github.com/bertt/leguesswho)"
 
 POSTS = {
+    2012: [],  # no announcement posts: acts come from the timetable image only (tools/timetable_2012.json, read off the chart in pdf/timetable_2012.jpg = https://web.archive.org/web/20121213124355/http://www.tivoli.nl/data/documenten/4.jpg)
     2013: [],  # no announcement posts: acts come from the official timetable only (tools/timetable_2013.json, read off the chart in pdf/timetable_def.pdf = https://web.archive.org/web/20131125090056/http://www.leguesswho.nl/data/timetable_def.pdf)
     2014: [],  # no announcement posts: acts come from the clashfinder timetable only
     2015: [],  # no announcement posts: acts come from the clashfinder timetable only
@@ -134,18 +135,18 @@ def blokken(year):
     return res
 
 
-CLASH_YEARS = (2013, 2014, 2015, 2016, 2017, 2018, 2019, 2021, 2022, 2023, 2024, 2025, 2026)  # clashfinder.com/s/<name> exists for these years
+CLASH_YEARS = (2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2021, 2022, 2023, 2024, 2025, 2026)  # clashfinder.com/s/<name> exists for these years
 CLASH_NAMES = {2014: "leguesswho2014", 2015: "lgw2015", 2016: "lgw2016", 2017: "lgw2017", 2018: "lgw2018"}  # default name is lgw<yy>
 EXTRA_CURATORS = {2016: ["Wilco", "Savages", "Julia Holter", "Suuns"]}  # the four curators of the 10th edition (not in a parseable post)
-OFFICIAL_TIMETABLE = (2013, 2019, 2026)  # these years use tools/timetable_<year>.json (tools/scrape_timetable.py, tools/parse_timetable_2019.py) instead of clashfinder
-DAY0 = {2013: "2013-11-28", 2019: "2019-11-07", 2026: "2026-11-05"}  # the Thursday of the festival
+OFFICIAL_TIMETABLE = (2012, 2013, 2019, 2026)  # these years use tools/timetable_<year>.json (tools/scrape_timetable.py, tools/parse_timetable_2019.py) instead of clashfinder
+DAY0 = {2012: "2012-11-29", 2013: "2013-11-28", 2019: "2019-11-07", 2026: "2026-11-05"}  # the Thursday of the festival
 DAYS = ["Thu", "Fri", "Sat", "Sun", "Mon", "Tue", "Wed"]
 PLAIN_CURATORS = {"Curator: clipping."}  # clipping. is a hip-hop trio doing a normal set, not a commissioned project
 # talks and panels that are on the line-up page but are not paid concerts
 PANELS = re.compile(r"^(Right Relations:|Artistic Freedom Under Threat:|Black Sonic Technologies:|Diasporic Soundscapes:|EPHEMERA:|Legacies of Resistance:|"
                     r"On Sound as Substance:|Palestinian Sound Archive:|Tech, Sound, Power:|The Art of Dissent:|The Politics of Culture:)", re.I)
 # approximate room size -> 0-100 (the timetable position is the strongest public headliner signal)
-STAGES = [(r"^tivoli oudegracht", 100), (r"^tivoli de helling", 55), (r"^tivoli spiegelbar", 40), (r"grote zaal\b", 92), (r"ronda", 100), (r"stadsschouwburg", 55), (r"pandora(?!.*(foyer|studio))|^tv pandora", 60),
+STAGES = [(r"^tivoli oudegracht", 100), (r"^tivoli de helling", 55), (r"^(tivoli|fuzzbox) spiegelbar", 40), (r"grote zaal\b", 92), (r"ronda", 100), (r"stadsschouwburg", 55), (r"pandora(?!.*(foyer|studio))|^tv pandora", 60),
           (r"cloud nine", 45), (r"hertz", 55), (r"domkerk|jacobikerk|janskerk|pieterskerk", 50), (r"theater utrecht (theater|koepel)|(theater|koepel) zaal, theater utrecht", 40),
           (r"kapitaal|blauwe zaal", 40), (r"db's main|main (stage|room), db's", 40), (r"db's bar|bar stage, db's", 30), (r"foyer|studio", 35)]
 

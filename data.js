@@ -313,8 +313,8 @@ const FEE_MODEL = {
     legend: { w: 9, short: "Legend", label: "Legend status", how: "Reputation, independent of scheduling, from Spotify play counts: up to 20 tracks of the artist are summed (a sample, as Spotify search is not ranked by popularity) and put on a log scale: 100,000 plays = 0, 10 million = 50, 1 billion = 100. Collaborations take the best score of the parts. Streaming favours current popularity over history, so older legends with few streams score low. Acts not on Spotify score 0. Available for every year." },
   },
 };
-// 2013-2015: no annual report in the data; extrapolated backwards from 2016 (EUR 280k) and 2017 (EUR 337k), about 10% lower per year (2013: 185k, same step back from 2014)
-const ESTIMATED_ARTIST_COSTS = { 2013: 185000, 2014: 205000, 2015: 250000, 2026: 600000 };
+// 2012-2015: no annual report in the data; extrapolated backwards from 2016 (EUR 280k) and 2017 (EUR 337k), about 10% lower per year (2013: 185k, 2012: 167k, same step back each year)
+const ESTIMATED_ARTIST_COSTS = { 2012: 167000, 2013: 185000, 2014: 205000, 2015: 250000, 2026: 600000 };
 
 const SOURCES = YEARS.filter(y => y.report).map(y => ({ year: y.year, url: y.report }))
   .concat([{ year: "plan", url: BASE + "Samenvatting%20meerjarenplan%2025-28.pdf", label: "Plan 2025–2028 (summary)" }]);

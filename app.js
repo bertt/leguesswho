@@ -229,7 +229,43 @@ el("supervisory").innerHTML = `<b>${esc(SUPERVISORY.title)}.</b> ${esc(SUPERVISO
 const tk = Y.filter(y => y.tickets);
 el("tickets").innerHTML = `<p class="note" style="margin-top:0"><b>Passes (paspartout) vs. day tickets:</b> the reports do <u>not</u> publish a number split. What they do say:</p>
 <ul class="ticket-list">${TICKET_FACTS.map(t => `<li><b>${t.year}</b> – ${esc(t.text)}</li>`).join("")}</ul>
+${(() => {
+  const m = TICKET_MODEL, n = v => Math.round(v).toLocaleString("en-GB");
+  const rows = Y.filter(y => TICKET_PRICES[y.year] && y.rev.tickets).map(y => {
+    const p = TICKET_PRICES[y.year], net = y.rev.tickets * m.vat;
+    return `<tr><td>${y.year}</td><td>€${p.day}</td><td>€${p.pass}</td><td>~${n(net * m.passShare / p.pass)}</td><td>~${n(net * (1 - m.passShare) / p.day)}</td></tr>`;
+  }).join("");
+  return `<div class="scroll"><table class="heat"><thead><tr><th>Year</th><th>Day ticket</th><th>Pass</th><th>Est. passes</th><th>Est. day tickets</th></tr></thead><tbody>${rows}</tbody></table></div>
+<p class="note">Prices are list prices incl. fees (avg. standard day ticket, regular pass; 2020 cancelled). <b>Counts are rough estimates, not reported figures:</b> ticket revenue + 9% VAT, assuming ${Math.round(m.passShare * 100)}% of revenue comes from passes; discounts, early-bird prices and free tickets are ignored, so real counts are probably somewhat higher.</p>`;
+})()}
 ${tk.length ? `<p class="note">Discount tickets sold: ${tk.map(y => `<b>${y.year}</b>: CJP ${y.tickets.cjp || "—"}, U-pas ${y.tickets.upas || "—"}, low-income day tickets ${y.tickets.lowIncome || "—"}`).join(" · ")}.</p>` : ""}`;
+
+const tkYears = Y.filter(y => y.year >= 2017);
+const tkEst = y => {
+  const p = TICKET_PRICES[y.year];
+  if (!p || !y.rev.tickets) return null;
+  const net = y.rev.tickets * TICKET_MODEL.vat;
+  return { pass: net * TICKET_MODEL.passShare / p.pass, day: net * (1 - TICKET_MODEL.passShare) / p.day };
+};
+function drawTickets() {
+  const price = document.querySelector('input[name="tk-mode"]:checked').value === "price";
+  const pick = f => tkYears.map(y => f(y));
+  chart("c-tickets", {
+    labels: tkYears.map(y => String(y.year)), covid: true, height: 320,
+    fmt: price ? v => "€" + Math.round(v) : num,
+    aria: price ? "Ticket prices per year" : "Estimated passes and day tickets sold per year",
+    series: price
+      ? [{ name: "Pass (4 days)", color: COL.pink, data: pick(y => (TICKET_PRICES[y.year] || {}).pass ?? null) },
+         { name: "Day ticket (avg.)", color: COL.yellow, data: pick(y => (TICKET_PRICES[y.year] || {}).day ?? null) }]
+      : [{ name: "Passes (est.)", color: COL.pink, data: pick(y => (tkEst(y) || {}).pass ?? null) },
+         { name: "Day tickets (est.)", color: COL.yellow, data: pick(y => (tkEst(y) || {}).day ?? null) }],
+    footnote: price ? "List prices incl. service fees; regular (not early-bird) pass price. 2020: festival cancelled." : "Rough estimates, not reported figures – see “All text & data”. 2020: festival cancelled.",
+  });
+}
+document.querySelectorAll('input[name="tk-mode"]').forEach(r => r.addEventListener("change", drawTickets));
+drawTickets();
+el("tk-info").addEventListener("click", () => el("tk-dialog").showModal());
+el("tk-dialog").addEventListener("click", e => { if (e.target === e.currentTarget) e.currentTarget.close(); });
 
 /* ---------- heatmap ---------- */
 const rows = [

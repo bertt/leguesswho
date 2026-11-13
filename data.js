@@ -188,6 +188,27 @@ const TRIVIA = [
   { icon: "🔁", label: "Re-sell cap", value: () => "100% + 5%", text: "from 2025 resale on TicketSwap is capped at the original price plus 5% service fee (was up to 120%)." },
 ];
 
+/*
+ * List prices incl. service fees (not in the annual reports; from leguesswho.com news and press/ticket sites).
+ * day = average standard day-ticket price (Thu/Sun vs Fri/Sat differ from 2017 on), pass = regular 4-day pass
+ * (not the cheaper early-bird price). The numbers of passes/day tickets are NOT published: the app estimates them
+ * from ticket revenue with TICKET_MODEL.
+ */
+const TICKET_PRICES = {
+  2017: { day: 40, pass: 132.5, note: "Thu €37.50, Fri–Sun €42.50" },
+  2018: { day: 45, pass: 137.5, note: "early-bird pass €117.50" },
+  2019: { day: 46, pass: 148, note: "Thu €43, other days €48; early-bird pass €103" },
+  2021: { day: 46, pass: 133 },
+  2022: { day: 58, pass: 158 },
+  2023: { day: 68, pass: 175, note: "Thu/Sun €63, Fri/Sat €73" },
+  2024: { day: 73, pass: 190, note: "Thu/Sun €68, Fri/Sat €78" },
+  2025: { day: 80, pass: 215, note: "Thu/Sun €75, Fri/Sat €85" },
+};
+const TICKET_MODEL = {
+  passShare: 0.6,   // assumed share of ticket revenue coming from passes
+  vat: 1.09,        // list prices include 9% VAT; revenue in the accounts is assumed to exclude it
+};
+
 /* What the reports say about passes (passe-partout) vs day tickets. NO split by number or revenue is published. */
 const TICKET_FACTS = [
   { year: 2018, text: "More passes were sold than the year before while day-ticket sales went down; many former day-ticket buyers now prefer a pass." },

@@ -68,10 +68,26 @@
     <h2>Visitors</h2>
     <p class="sub">The physical festival is limited by the number of venues, so growth happens online (COSMOS) and in the city (U?).</p>
     <div class="card"><div class="chart" id="c-visitors"></div></div>
-    <div class="grid2">
-      <div class="card"><h3>Ticket revenue per festival visitor</h3><div class="chart" id="c-ppv"></div></div>
-      <div class="card"><h3>Passes vs. day tickets</h3><div id="tickets"></div></div>
+    <div class="card"><h3>Ticket revenue per festival visitor</h3><div class="chart" id="c-ppv"></div></div>
+  </section>
+
+  <section id="ticketprices">
+    <h2>Tickets</h2>
+    <p class="sub">Prices of day tickets and passes, with a rough estimate of how many of each were sold.</p>
+    <div class="card">
+      <div class="feebar">
+        <div class="radios" role="radiogroup" aria-label="Chart type">
+          <label><input type="radio" name="tk-mode" value="count" checked> Estimated numbers</label>
+          <label><input type="radio" name="tk-mode" value="price"> Ticket price</label>
+        </div>
+        <button id="tk-info" class="info" type="button">All text &amp; data</button>
+      </div>
+      <div class="chart" id="c-tickets"></div>
     </div>
+    <dialog id="tk-dialog" class="modal">
+      <form method="dialog" class="mhead"><h3>Passes vs. day tickets</h3><button class="mclose" type="submit" aria-label="Close">×</button></form>
+      <div id="tickets"></div>
+    </dialog>
   </section>
 
   <section id="where">

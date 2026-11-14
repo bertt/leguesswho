@@ -314,7 +314,8 @@ const FEE_MODEL = {
   },
 };
 // 2011-2015: no annual report in the data; extrapolated backwards from 2016 (EUR 280k) and 2017 (EUR 337k), about 10% lower per year (2013: 185k, 2012: 167k, 2011: 150k, same step back each year)
-const ESTIMATED_ARTIST_COSTS = { 2011: 150000, 2012: 167000, 2013: 185000, 2014: 205000, 2015: 250000, 2026: 600000 };
+// 2008-2009: the same 10% step back gives about 120k for 2009; 2008 is set lower (75k) because that edition was much smaller (26 acts, 3 rooms)
+const ESTIMATED_ARTIST_COSTS = { 2008: 75000, 2009: 120000, 2011: 150000, 2012: 167000, 2013: 185000, 2014: 205000, 2015: 250000, 2026: 600000 };
 
 const SOURCES = YEARS.filter(y => y.report).map(y => ({ year: y.year, url: y.report }))
   .concat([{ year: "plan", url: BASE + "Samenvatting%20meerjarenplan%2025-28.pdf", label: "Plan 2025–2028 (summary)" }]);
